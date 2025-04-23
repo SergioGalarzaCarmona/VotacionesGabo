@@ -13,8 +13,23 @@ def logIn(request):
     if request.method == 'GET':
         return render(request, 'users/logIn.html')
     else:
+        #get the username by email
+        try:
+            user = User.objects.get(email=request.POST['email'])
+        #if the email is not registered, return a error message
+        except User.DoesNotExist:
+            return render(request, 'Users/LogIn.html', {
+                'form': LoginUser(request.POST),
+                'error': 'El email no esta registrado.'
+            })
+        #verifies if the user is active
+        if not user.is_active:
+            return render(request,'users/logIn.html',{
+                'form': LoginUser(request.POST),
+                'error': 'Este usuario ya votó.'
+            })
         #authenticate user
-        user = authenticate(username=request.POST['username'], password=request.POST['password'], is_active=True)
+        user = authenticate(username=user.username, password=request.POST['password'], is_active=True)
         #If find user and two values are corrects, log in.
         if user is not None:
             login(request, user)
@@ -27,6 +42,7 @@ def logIn(request):
             })
 
 def signUp(request):
+    print(request.POST)
     if request.method == 'GET':
         return render(request, 'users/signUp.html')
     else:
@@ -39,10 +55,8 @@ def signUp(request):
                 })
         #if all form is valid, save it to create an user.
         user = form.save()
-        #If the user uploads an image, the image will have that value, otherwise, it will have a default value.
-        image = request.FILES.get('image','default.jpg')
-        #with user and image create a profile
-        form.create_profile(user,image)
+        #with user create a profile
+        form.create_profile(user)
         #login the user
         login(request, user)
         return redirect('main')
@@ -50,3 +64,10 @@ def signUp(request):
 def Logout(request):
     logout(request)
     return redirect('home')
+
+@login_required(login_url='logIn')
+def main(request):
+    if request.method == 'GET':
+        return render(request, 'users/main.html')
+    else:
+        return redirect('home')

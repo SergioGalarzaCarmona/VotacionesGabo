@@ -7,15 +7,6 @@ from django.core.exceptions import ValidationError
 
 class RegisterUser(UserCreationForm):
     
-    image = forms.ImageField(
-        label='Imagen de Perfil', 
-        required=False, 
-        widget=forms.FileInput(
-            attrs={
-                'class' : ''
-                }
-            )
-        )
     username = forms.CharField(
         max_length=30,
         label='Nombre de Usuario',
@@ -38,6 +29,27 @@ class RegisterUser(UserCreationForm):
                 }
             )
         )
+    grade = forms.CharField(
+        max_length=10,
+        label='Grado',
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Grado',
+                'class' : ''
+                }
+            )
+        )
+    identity = forms.IntegerField(    
+        label='Identificación',
+        required=True,
+        widget=forms.NumberInput(
+            attrs={
+                'placeholder': 'Identificación',
+                'class' : ''
+                }
+            )
+    )
     password1 = forms.CharField(
         max_length=30,
         label='Contraseña', 
@@ -77,11 +89,17 @@ class RegisterUser(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('El email ya está registrado.')
         return email
-    
-    def create_profile(self,user,image = None):
-        if image == None:
-            image = 'default.jpg'
-        Profile.objects.create(user=user,image=image)
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError('Las contraseñas no coinciden.')
+        return password2
+    def create_profile(self,user):
+        grade = self.cleaned_data.get('grade')
+        identity = self.cleaned_data.get('identity')
+        return Profile.objects.create(user=user, grade=grade, identification=identity)
+        
 
 #Form to login
 class LoginUser(AuthenticationForm):

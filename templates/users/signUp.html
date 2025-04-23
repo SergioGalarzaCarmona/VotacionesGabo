@@ -35,103 +35,104 @@
                     </div>
                     <div class="row">
                     </div>
-                    <form action="#!">
+                    <form action="{% url 'signUp' %}" method="POST">
+                      {% csrf_token %}
                       <div class="row gy-3 overflow-hidden">
                         <div class="col-12">
                           <div class="form-floating mb-3">
                             {{form.username.errors}}
-                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required>
-                            <label for="firstName" class="form-label">Nombre de Usuario</label>
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Nombre completo" required>
+                            <label for="username" class="form-label">Nombre de Usuario</label>
                           </div>
                         </div>
                         <div class="col-12">
                           <div class="form-floating mb-3">
                             {{form.identity.errors}}
-                            <input type="text" class="form-control" name="Numero de Identidad" id="password" value="" placeholder="Password" required>
-                            <label for="password" class="form-label">Numero de Identidad</label>
+                            <input type="number" class="form-control" name="identity" id="identity" placeholder="Numero de identificación" required>
+                            <label for="identity" class="form-label">Numero de Identidad</label>
                           </div>
                         </div>
                         <div class="col-12">
                           <div class="form-floating mb-3">
                             {{form.grade.errors}}
-                            <select type="password" class="form-control" name="Numero de Identidad" id="password" value="" placeholder="Password" required>
-                              <option value="1">1-1</option>
-                              <option value="1">1-2</option>
-                              <option value="1">1-3</option>
-                              <option value="1">1-4</option>
-                              <option value="1">1-5</option>
-                              <option value="1">1-6</option>
+                            <select class="form-control" name="grade" id="grade" required>
+                              <option value="1-1">1-1</option>
+                              <option value="1-2">1-2</option>
+                              <option value="1-3">1-3</option>
+                              <option value="1-4">1-4</option>
+                              <option value="1-5">1-5</option>
+                              <option value="1-6">1-6</option>
 
-                              <option value="1">2-1</option>
-                              <option value="1">2-2</option>
-                              <option value="1">2-3</option>
-                              <option value="1">2-4</option>
-                              <option value="1">2-5</option>
-                              <option value="1">2-6</option>
+                              <option value="2-1">2-1</option>
+                              <option value="2-2">2-2</option>
+                              <option value="2-3">2-3</option>
+                              <option value="2-4">2-4</option>
+                              <option value="2-5">2-5</option>
+                              <option value="2-6">2-6</option>
 
-                              <option value="1">3-1</option>
-                              <option value="1">3-2</option>
-                              <option value="1">3-3</option>
-                              <option value="1">3-4</option>
-                              <option value="1">3-5</option>
-                              <option value="1">3-6</option>
+                              <option value="3-1">3-1</option>
+                              <option value="3-2">3-2</option>
+                              <option value="3-3">3-3</option>
+                              <option value="3-4">3-4</option>
+                              <option value="3-5">3-5</option>
+                              <option value="3-6">3-6</option>
 
-                              <option value="1">4-1</option>
-                              <option value="1">4-2</option>
-                              <option value="1">4-3</option>
-                              <option value="1">4-4</option>
-                              <option value="1">4-5</option>
-                              <option value="1">4-6</option>
+                              <option value="4-1">4-1</option>
+                              <option value="4-2">4-2</option>
+                              <option value="4-3">4-3</option>
+                              <option value="4-4">4-4</option>
+                              <option value="4-5">4-5</option>
+                              <option value="4-6">4-6</option>
 
-                              <option value="1">5-1</option>
-                              <option value="1">5-2</option>
-                              <option value="1">5-3</option>
-                              <option value="1">5-4</option>
-                              <option value="1">5-5</option>
-                              <option value="1">5-6</option>
+                              <option value="5-1">5-1</option>
+                              <option value="5-2">5-2</option>
+                              <option value="5-3">5-3</option>
+                              <option value="5-4">5-4</option>
+                              <option value="5-5">5-5</option>
+                              <option value="5-6">5-6</option>
 
-                              <option value="1">6-1</option>
-                              <option value="1">6-2</option>
-                              <option value="1">6-3</option>
-                              <option value="1">6-4</option>
-                              <option value="1">6-5</option>
-                              <option value="1">6-6</option>
+                              <option value="6-1">6-1</option>
+                              <option value="6-2">6-2</option>
+                              <option value="6-3">6-3</option>
+                              <option value="6-4">6-4</option>
+                              <option value="6-5">6-5</option>
+                              <option value="6-6">6-6</option>
 
-                              <option value="1">7-1</option>
-                              <option value="1">7-2</option>
-                              <option value="1">7-3</option>
-                              <option value="1">7-4</option>
-                              <option value="1">7-5</option>
-                              <option value="1">7-6</option>
+                              <option value="7-1">7-1</option>
+                              <option value="7-2">7-2</option>
+                              <option value="7-3">7-3</option>
+                              <option value="7-4">7-4</option>
+                              <option value="7-5">7-5</option>
+                              <option value="7-6">7-6</option>
 
-                              <option value="1">8-1</option>
-                              <option value="1">8-2</option>
-                              <option value="1">8-3</option>
-                              <option value="1">8-4</option>
-                              <option value="1">8-5</option>
-                              <option value="1">8-6</option>
+                              <option value="8-1">8-1</option>
+                              <option value="8-2">8-2</option>
+                              <option value="8-3">8-3</option>
+                              <option value="8-4">8-4</option>
+                              <option value="8-5">8-5</option>
+                              <option value="8-6">8-6</option>
 
-                              <option value="1">9-1</option>
-                              <option value="1">9-2</option>
-                              <option value="1">9-3</option>
-                              <option value="1">9-4</option>
-                              <option value="1">9-5</option>
+                              <option value="9-1">9-1</option>
+                              <option value="9-2">9-2</option>
+                              <option value="9-3">9-3</option>
+                              <option value="9-4">9-4</option>
+                              <option value="9-5">9-5</option>
                               
 
-                              <option value="1">10-1</option>
-                              <option value="1">10-2</option>
-                              <option value="1">10-3</option>
-                              <option value="1">10-4</option>
-                              <option value="1">10-5</option>
+                              <option value="10-1">10-1</option>
+                              <option value="10-2">10-2</option>
+                              <option value="10-3">10-3</option>
+                              <option value="10-4">10-4</option>
+                              <option value="10-5">10-5</option>
                               
 
-                              <option value="1">11-1</option>
-                              <option value="1">11-2</option>
-                              <option value="1">11-3</option>
-                              <option value="1">11-4</option>
-                              <option value="1">11-5</option>
+                              <option value="11-1">11-1</option>
+                              <option value="11-2">11-2</option>
+                              <option value="11-3">11-3</option>
+                              <option value="11-4">11-4</option>
+                              <option value="11-5">11-5</option>
                             </select>
-                            <label for="password" class="form-label">Grado</label>
+                            <label for="grade" class="form-label">Grado</label>
                           </div>
                         </div>
                         <div class="col-12">
@@ -143,16 +144,15 @@
                         </div>
                         <div class="col-12">
                           <div class="form-floating mb-3">
-                            {{form.password.errors}}
-                            <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
-                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" name="password1" id="password" placeholder="Password" required>
+                            <label for="password1" class="form-label">Contraseña</label>
                           </div>
                         </div>
                         <div class="col-12">
                           <div class="form-floating mb-3">
                             {{form.password.errors}}
-                            <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
-                            <label for="password" class="form-label">Confirmación de contraseña</label>
+                            <input type="password" class="form-control" name="password2" id="password" placeholder="Confirmación de contraseña" required>
+                            <label for="password2" class="form-label">Confirmación de contraseña</label>
                           </div>
                         </div>
                         <div class="col-12">

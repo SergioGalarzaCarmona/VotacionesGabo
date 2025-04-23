@@ -1,11 +1,12 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home, signUp, Logout, logIn
+from .views import home, signUp, Logout, logIn, main
 
 urlpatterns = [
     path('', home, name='home'),
     path('signUp', signUp, name='signUp'),
     path('logIn/', logIn, name='logIn'),
     path('logout/', Logout, name='logout'),
+    path('main/', main, name='main'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
