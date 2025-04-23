@@ -1,0 +1,74 @@
+body {
+    overflow-x: hidden;
+}
+
+.navbar-brand {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+} 
+
+.navbar-brand__logo {
+    max-height: 10vh;
+}
+
+.navbar-brand > p {
+    margin: 0;
+}
+
+.navbar-nav {
+    margin-left: auto;
+    margin-right: 1vw;
+}
+
+.nav-item {
+    margin: 0 3vw;
+}
+
+.carousel-container {
+    margin: 5vh 0;
+}
+
+.controls {
+    z-index: 5;
+}
+
+.carousel-container > .row {
+    justify-content: space-evenly;
+}
+
+.carousel-inner {
+    max-height: 80vh;
+}
+
+.carousel-item {
+    position: relative;
+}
+
+.item-text {
+    width: 60%;
+    padding: 1vh 1vw;
+    position: absolute;
+    color: #fff;
+    font-size: 2rem;
+    text-align: justify;
+    top: 0;
+    z-index: 3;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0006;
+    z-index: 2;
+}
+
+.candidatos {
+    margin: 1vw;
+    background-image: radial-gradient(#18233f44, #18233f11);
+    
+}
+

@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'CSS/homeStyles.css' %}">
+    <title>Proyecto Democrático</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary p-0">
+            <div class="container-fluid p-0">
+              <div class="navbar-brand">
+                <img src="{% static '/IMAGES/logo.jfif' %}" alt="Logo Gabop" class="navbar-brand__logo">
+                <p>Altruismo y comunicación</p>
+              </div>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Propuestas</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Estadísticas</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logIn' %}">¡Vota!</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </header>
+    <main>
+      <section class="container-fluid carousel-container d-sm-none d-md-block">
+        <div class="row">
+          <div class="col-lg-10">
+            <div id="carouselExampleIndicators" class="carousel slide">
+              <div class="carousel-indicators controls">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              </div>
+              <div class="carousel-inner container-fluid">
+                <div class="carousel-item active">
+                  <p class="item-text">Como estudiantes de Gabo es nuestro deber y obligación votar por lo mejor para todos.
+                    ¡Animate a votar!
+                  </p>
+                  <img src="{%static '/IMAGES/home_democracia_1.png'%}" class="d-block w-100" alt="¡Vota!">
+                </div>
+                <div class="carousel-item">
+                  <img src="{%static '/IMAGES/SignUp.png'%}" class="d-block w-100" alt="...">
+                  <div class="overlay"></div>
+                  <p class="item-text">Accede fácilmente creando una cuenta.</p>
+                </div>
+                <div class="carousel-item">
+                  <img src="{%static '/IMAGES/Pensante.jpg'%}" class="d-block w-100" alt="...">
+                  <div class="overlay"></div>
+                  <p class="item-text">Democracia significa gobierno por los que no tienen educación, y aristocracia significa gobierno por los mal educados.</p>
+                </div>
+              </div>
+              <button class="carousel-control-prev controls" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next controls" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="candidatos">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="{%static '/IMAGES/dalto.webp'%}" class="img-fluid rounded-start" alt="Benito">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Benito 0-3</h5>
+                <p class="card-text">Propone llevar plays al colegio.</p>
+                <p class="card-text"><small class="text-body-secondary">El que no vote por mi es gay</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="{%static '/IMAGES/Pacho.jpg'%}" class="img-fluid rounded-start" alt="Pacho">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Pacho 0-5</h5>
+                <p class="card-text">Propone interclases de fútbol</p>
+                <p class="card-text"><small class="text-body-secondary">Era gol de Yepes</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="{%static '/IMAGES/Valentina.jpg'%}" class="img-fluid rounded-start" alt="Valentina">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Valentina 0-1</h5>
+                <p class="card-text">Propone una "yincana" (nadie va votar por ella)</p>
+                <p class="card-text"><small class="text-body-secondary">No me quieren en la casa</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="text-center text-lg-start" style="background-color: #eb0000;">
+      <div class="container d-flex justify-content-center py-5">
+        <button type="button" class="btn btn-primary btn-lg btn-floating mx-2" style="background-color: #000;">
+          <i class="bi bi-facebook"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-lg btn-floating mx-2" style="background-color: #000;">
+          <i class="bi bi-instagram"></i>
+        </button>
+      </div>
+  
+      <!-- Copyright -->
+      <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2020 Copyright: I.E. Gabo
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>
+</body>
+</html>
