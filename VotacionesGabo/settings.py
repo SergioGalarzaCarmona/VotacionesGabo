@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,6 +70,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'VotacionesGabo.wsgi.application'
+#Asgi configuration
+ASGI_APPLICATION = 'VotacionesGabo.asgi.application'
+#channel layer configuration(channel_redis)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 
 # Database

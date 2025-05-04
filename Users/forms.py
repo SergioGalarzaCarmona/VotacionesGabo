@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Profile
+from .models import Profile, Candidates
 from django.core.exceptions import ValidationError
 
 
@@ -129,3 +129,29 @@ class LoginUser(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
+        
+class VoteForm(forms.Form):
+    candidate = forms.ModelChoiceField(
+        queryset=Candidates.objects.all(),
+        label='Candidato',
+        required=True,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+    def clean(self):
+        return super().clean()
+        
+    def save(self,user = None):
+        candidate = self.cleaned_data.get('candidate')
+        if candidate:
+            candidate.votes += 1
+            candidate.save()
+        if user:
+            user.is_active = False
+            user.save()
+        
+        
+    

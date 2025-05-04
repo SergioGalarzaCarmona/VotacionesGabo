@@ -2,13 +2,12 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterUser, LoginUser
+from .forms import RegisterUser, LoginUser, VoteForm
 
 # Create your views here.
 def home(request):
     return render(request, 'users/home.html')
 
-#Function used in other view
 def logIn(request):
     if request.method == 'GET':
         return render(request, 'users/logIn.html')
@@ -28,6 +27,9 @@ def logIn(request):
                 'form': LoginUser(request.POST),
                 'error': 'Este usuario ya votó.'
             })
+        if user.is_superuser:
+            login(request, user)
+            return redirect('admin_votes')
         #authenticate user
         user = authenticate(username=user.username, password=request.POST['password'], is_active=True)
         #If find user and two values are corrects, log in.
@@ -36,7 +38,7 @@ def logIn(request):
             return redirect('main')
         #if not find user, return a error message 
         else:
-            return render(request, 'Users/authenticate.html', {
+            return render(request, 'Users/logIn.html', {
                 'form': LoginUser(request.POST),
                 'error': 'Usuario o contraseña incorrectos'
             })
@@ -68,6 +70,20 @@ def Logout(request):
 @login_required(login_url='logIn')
 def main(request):
     if request.method == 'GET':
-        return render(request, 'users/main.html')
+        return render(request, 'users/main.html',{
+            'form' : VoteForm(),
+        })
     else:
-        return redirect('home')
+        form = VoteForm(request.POST)
+        if not form.is_valid():
+            return render(request, 'users/main.html',{
+                'form' : form
+            })
+        form.save(user=request.user)
+        return redirect('main')
+    
+@login_required(login_url='logIn')
+def admin_votes(request):
+
+    if request.method == 'GET':
+        return render(request,'Users/admin.html')
