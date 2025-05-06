@@ -1,5 +1,30 @@
+:root {
+    /* Colores principales */
+    --color-amarillo-sol: #F9D923;
+    --color-rojo-coral: #F24C4C;
+    --color-azul-real: #3A86FF;
+    --color-gris-claro: #F5F5F5;
+    --color-azul-marino: #1B1B3A;
+  
+    /* Colores secundarios */
+    --color-amarillo-mostaza: #FFB200;
+    --color-rojo-vino: #B22234;
+    --color-azul-pastel: #A7C7E7;
+  
+    /* Texto */
+    --color-texto-principal: #1B1B3A;
+    --color-texto-claro: #FFFFFF;
+  }
+
 body {
     overflow-x: hidden;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--color-azul-marino);
 }
 
 .navbar-brand {
@@ -7,6 +32,7 @@ body {
     flex-direction: row;
     align-items: center;
     padding: 0;
+    gap: 1vw;
 } 
 
 .navbar-brand__logo {
@@ -27,7 +53,9 @@ body {
 }
 
 .carousel-container {
-    margin: 5vh 0;
+    padding-top: 5vh;
+    padding-bottom: 15vh;
+    background-color: #d7eafc;
 }
 
 .controls {
@@ -67,8 +95,72 @@ body {
 }
 
 .candidatos {
-    margin: 1vw;
-    background-image: radial-gradient(#18233f44, #18233f11);
-    
+    padding: 5vh 2vw;
+    background-color: rgba(154, 47, 180, 0.4)
 }
 
+.candidatos > div:first-child {
+    background-color: var(--color-amarillo-sol);
+    margin-top: 1rem;
+}
+
+.candidatos > div:nth-child(2) {
+    background-color: var(--color-rojo-coral);
+    color: var(--color-texto-claro);
+}
+
+.candidatos > div:last-child {
+    background-color: var(--color-azul-pastel);
+    color: var(--color-texto-principal);
+}
+
+.candidatos > div > div > div:has(img) {
+    height: 30vh;
+    width: 30vw;
+}
+
+.candidatos > div > div > div > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.Sena {
+    height: 50dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5dvw;
+    margin-top: 15vh;
+}
+
+.Sena > div {
+    height: 80%;
+}
+
+.Sena > p {
+    height: 20%;
+}
+
+.Sena img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+footer {
+    margin-top: 15vh;
+}
+
+@media (max-width: 768px) {
+    .item-text {
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    .candidatos > div > div > div:has(img) {
+        height: 30vh;
+        width: 100vw;
+    }
+}
