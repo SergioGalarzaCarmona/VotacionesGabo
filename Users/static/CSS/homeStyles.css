@@ -96,7 +96,7 @@ header {
 
 .candidatos {
     padding: 5vh 2vw;
-    background-color: rgba(154, 47, 180, 0.4)
+    background-color: rgba(153, 153, 153, 0.4)
 }
 
 .candidatos > div:first-child {
