@@ -40,10 +40,10 @@
                     </a>
                 </li>
                 <li class="sidebar__item">
-                    <a href="" class="sidebar__item-link">
+                    <label for="reset-dialog" class="sidebar__item-link open-dialog">
                         <span class="material-symbols-outlined">groups</span>
                         <p>Resetear votaciones</p>
-                    </a>
+                    </label>
                 </li>
             </ul>
         </nav>
@@ -87,22 +87,34 @@
             <form  method="POST" class="create-candidate">
                 {% csrf_token %}
                 {{ candidates_form }}
-            <input type="submit" value="Crear candidato">
-        </form>
+                <input type="submit" value="Crear candidato">
+            </form>
+            <dialog class="reset-dialog">
+                <label for="close-dialog" class="material-symbols-outlined">Close</label>
+                <p>¿Está seguro? Al reiniciar las votaciones se borran todos los registros irreversiblemente.</p>
+                <div>
+                    <button value=0 id="close-dialog">No</button>
+                    <a href="{% url 'restart' %}"><button  value=1 id="create">Si</button></a>
+                </div>
+            </dialog>
         </div> 
-        
-            <div class="resultados">
-                {% for n,i in votes %}
-                    <p>{{forloop.counter}}</p>    
-                    <p>{{n}}</p>  
-                    <p>{{i}}</p>
+        <div class="resultados">
+            <table class="subusers-table">
+                <tr>
+                    <th>Puesto</th>
+                    <th>Nombre</th>
+                    <th>Cantidad Votos</th>
+                </tr>
+                {% for name,votes in votes %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{name}}</td>
+                    <td>{{votes}}</td>
+                </tr>
                 {% endfor %}
-            </div>
-            <!-- Form to create candidates. -->
-       
-       
+            </table>
+        </div>
     </main>
-   
     <script src="{%static '/JS/sidebarScript.js'%}"></script>
     <script src="{% static 'JS/adminScript.js' %}"></script>
 </body> 

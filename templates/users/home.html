@@ -82,6 +82,7 @@
         </div>
       </section>
       <section class="candidatos" id="candidatos">
+        {% for candidate in candidates %}
         <div class="card mb-3">
           <div class="row g-0">
             <div class="col-md-4">
@@ -89,41 +90,13 @@
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">Benito 0-3</h5>
-                <p class="card-text">Propone llevar plays al colegio.</p>
-                <p class="card-text"><small>El que no vote por mi es gay</small></p>
+                <h5 class="card-title">{{candidate.profile.user.username}} {{candidate.profile.grade}}</h5>
+                <p class="card-text">{{description}}</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="card mb-3">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="{%static '/IMAGES/Pacho.webp'%}" class="img-fluid rounded-start" alt="Pacho">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Pacho 0-5</h5>
-                <p class="card-text">Propone interclases de fútbol</p>
-                <p class="card-text"><small>Era gol de Yepes</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-3">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="{%static '/IMAGES/Valentina.webp'%}" class="img-fluid rounded-start" alt="Valentina">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Valentina 0-1</h5>
-                <p class="card-text">Propone una "yincana" (nadie va votar por ella)</p>
-                <p class="card-text"><small>No me quieren en la casa</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </section>
     </main>
     <aside class="Sena">

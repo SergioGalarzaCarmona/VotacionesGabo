@@ -37,3 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
     
     toggleTableVisibility();
 });
+
+const dialog = document.querySelector(".reset-dialog");
+const openDialog = document.querySelector(".open-dialog");
+openDialog.addEventListener("click", () => {
+    dialog.showModal();
+});
+const closeDialog = document.getElementById("close-dialog");
+closeDialog.addEventListener("click", () => {
+    dialog.close();
+});
