@@ -21,17 +21,17 @@
         </form>
         <nav class="sidebar__nav">
             <ul>
-                <li class="sidebar__item">
-                    <a href="#" class="sidebar__item-link">
+                <li class="sidebar__item" for="create-subuser">
+                    <label href="#" class="sidebar__item-link">
                         <span class="material-symbols-outlined">add</span>
                         <p>Crear Usuario</p>
-                    </a>
+                    </label>
                 </li>
                 <li class="sidebar__item">
-                    <a href="#" class="sidebar__item-link">
+                    <label for="create-candidate" class="sidebar__item-link">
                         <span class="material-symbols-outlined">delete</span>
                         <p>Crear Candidato</p>
-                    </a>
+                    </label>
                 </li>
                 <li class="sidebar__item">
                     <a href="#" class="sidebar__item-link">
@@ -40,8 +40,8 @@
                     </a>
                 </li>
                 <li class="sidebar__item">
-                    <a href="#" class="sidebar__item-link">
-                        <span class="material-symbols-outlined">event_note</span>
+                    <a href="" class="sidebar__item-link">
+                        <span class="material-symbols-outlined">groups</span>
                         <p>Resetear votaciones</p>
                     </a>
                 </li>
@@ -75,10 +75,23 @@
         <div class="objects-area">
         </div>
     </main>
+    <section>
+        <!-- Form to create candidates. -->
+        <form  method="POST">
+            {% csrf_token %}
+            {{ candidates_form }}
+        </form>
+        <form action="{% url 'signUp' %}" method="POST">
+            {% csrf_token %}
+            {{ users_form }}
+        </form>
+    </section>
+    
     <script>
         user = '{{ request.user }}'
         </script>
     <script src="{%static '/SCRIPTS/sidebarScript.js'%}"></script>
-    <script src="{% static 'JS/admin.js' %}"></script>
+    <script src="{% static 'JS/sidebarScript.js' %}"></script>
+    <script src="{% static 'JS/adminScript.js' %}"></script>
 </body> 
 </html>
