@@ -120,4 +120,5 @@ def restart_votes(request):
     if not request.user.is_superuser:
         return redirect('main')
     call_command('flush', interactive=False)
+    return redirect('home')
 
