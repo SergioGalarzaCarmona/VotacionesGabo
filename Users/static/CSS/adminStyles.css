@@ -175,7 +175,7 @@ input[type="checkbox"], .open-menu {
     background-color: transparent;
 }
 
-.sideba__formr label::before {
+.sidebar__form label::before {
     top: -25px;
     left: 19px;
     border-bottom-right-radius: 25px;
