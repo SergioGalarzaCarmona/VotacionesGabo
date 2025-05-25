@@ -62,8 +62,6 @@ def signUp(request):
         user = form.save()
         #with user create a profile
         form.create_profile(user)
-        #login the user
-        login(request, user)
         return redirect('admin_votes')
     
 def Logout(request):
@@ -103,8 +101,14 @@ def admin_votes(request):
         #if the profile is not empty, create a candidate
         if profile:
             form = CreateCandidateForm(request.POST)
-            CreateCandidateForm.save()
-        
+            if not form.is_valid():
+                return render(request,'Users/admin.html',{
+                    'candidates_form' : CreateCandidateForm(request.POST),
+                    'users_form' : RegisterUser(),
+                    'votes' : votes
+                })
+            form.save()
+            return redirect('admin_votes')
 @login_required(login_url='logIn')
 def restart_votes(request):
     #check if the user is superuser

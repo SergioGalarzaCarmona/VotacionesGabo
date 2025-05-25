@@ -93,8 +93,19 @@
                 {{votes}}
             </div>
             <!-- Form to create candidates. -->
-     
-    
+        <form  method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ candidates_form }}
+            <input type="submit" value="Crear candidato">
+        </form>
+        <form action="{% url 'signUp' %}" method="POST">
+            {% csrf_token %}
+            {{ users_form }}
+            <input type="submit" value="Crear usuario">
+        </form>
+        </div>
+        <div class="objects-area">
+        </div>
     </main>
     <section>
         
