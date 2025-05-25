@@ -167,6 +167,7 @@ class CreateCandidateForm(forms.ModelForm):
     )
     image = forms.ImageField(
         label='Imagen',
+        required=False
     )
     class Meta:
         model = Candidates
