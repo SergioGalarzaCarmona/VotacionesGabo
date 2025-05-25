@@ -92,7 +92,11 @@
         </div> 
         
             <div class="resultados">
-                {{votes}}
+                {% for n,i in votes %}
+                    <p>{{forloop.counter}}</p>    
+                    <p>{{n}}</p>  
+                    <p>{{i}}</p>
+                {% endfor %}
             </div>
             <!-- Form to create candidates. -->
        
