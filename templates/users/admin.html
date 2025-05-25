@@ -85,20 +85,26 @@
                     <img src="{%static '/IMAGES/logo_transparente_blanco.webp'%}" alt="logo" class="logo">
                 </div>
             </div>
+            <div>
+                {{votes}}
+            </div>
+            <!-- Form to create candidates. -->
+        <form  method="POST">
+            {% csrf_token %}
+            {{ candidates_form }}
+            <input type="submit" value="Crear candidato">
+        </form>
+        <form action="{% url 'signUp' %}" method="POST">
+            {% csrf_token %}
+            {{ users_form }}
+            <input type="submit" value="Crear usuario">
+        </form>
         </div>
         <div class="objects-area">
         </div>
     </main>
     <section>
-        <!-- Form to create candidates. -->
-        <form  method="POST">
-            {% csrf_token %}
-            {{ candidates_form }}
-        </form>
-        <form action="{% url 'signUp' %}" method="POST">
-            {% csrf_token %}
-            {{ users_form }}
-        </form>
+        
     </section>
     
     <script>

@@ -89,13 +89,21 @@ def main(request):
 def admin_votes(request):
     #check if the user is superuser
     if not request.user.is_superuser:
-        print(request.user.is_superuser)
         return redirect('main')
+    candidates = Candidates.objects.all()
+    votes = [ (f'{candidate.profile.user.username}', candidate.votes) for candidate in candidates ]
     if request.method == 'GET':
         return render(request,'Users/admin.html',{
             'candidates_form' : CreateCandidateForm(),
             'users_form' : RegisterUser(),
+            'votes' : votes
         })
+    else:
+        profile = request.POST.get('profile')
+        #if the profile is not empty, create a candidate
+        if profile:
+            form = CreateCandidateForm(request.POST)
+            CreateCandidateForm.save()
         
 @login_required(login_url='logIn')
 def restart_votes(request):
@@ -104,15 +112,3 @@ def restart_votes(request):
         return redirect('main')
     call_command('flush', interactive=False)
 
-@login_required(login_url='logIn')
-def view_votes(request):
-    #check if the user is superuser
-    if not request.user.is_superuser:
-        return redirect('main')
-    #get all candidates
-    candidates = Candidates.objects.all()
-    votes = { 'candidate': candidate.votes for candidate in candidates }
-    if request.method == 'GET':
-        return render(request,'Users/admin.html',{
-            'votes' : votes
-        }) 
