@@ -241,6 +241,8 @@ main {
     background-color: var(--bg-color);
     position: fixed;
     right: 0;
+    background-image: url(../IMAGES/Escritorio.webp);
+    background-size: cover;
 }
 
 aside:has(input[type="checkbox"]:checked) ~ main {
@@ -317,7 +319,7 @@ aside:has(input[type="checkbox"]:checked) ~ main {
     position: absolute;
     top: calc(calc(2rem + 44.78px) + 10px);
     margin-left: 15px;
-    color: #fff;
+    color: #cf1313;
     font-size: 2.5rem;
     font-weight: bolder;
     cursor: pointer;

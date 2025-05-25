@@ -34,7 +34,7 @@
                     </label>
                 </li>
                 <li class="sidebar__item">
-                    <a href="#" class="sidebar__item-link">
+                    <a href="{% url 'admin_votes' %}" class="sidebar__item-link">
                         <span class="material-symbols-outlined">partner_exchange</span>
                         <p>Resultados</p>
                     </a>
@@ -65,30 +65,32 @@
         </div>
     </aside>
     <main>
-        <div class="forms-container">
-            <nav>
-                <label for="create-subuser" class="material-symbols-outlined close-formSubuser hidden">arrow_back</label>
-                <label for="create-group" class="material-symbols-outlined close-formCandidate hidden">arrow_back</label>
-            </nav>
-            <input type="checkbox" id="create-subuser">
-            <form action="{% url 'signUp' %}" method="POST" class="create-subuser">
-                {% csrf_token %}
-                {{ users_form }}
-                <input type="submit" value="Crear usuario">
-            </form>
-            <input type="checkbox" id="create-candidate">
-            <form  method="POST">
-                {% csrf_token %}
-                {{ candidates_form }}
-            <input type="submit" value="Crear candidato" class="create-candidate">
-        </form>
-        </div> 
         <div class="filter-bar container"> 
             <div class="filter-bar__filter-container row">
                 <div class="filter-bar__logo-container col-md-5 col-0">
                     <img src="{%static '/IMAGES/IEgabo.webp'%}" alt="logo" class="logo">
                 </div>
             </div>
+        </div>
+        <div class="forms-container">
+            <nav>
+                <label for="create-subuser" class="material-symbols-outlined close-formSubuser hidden">arrow_back</label>
+                <label for="create-candidate" class="material-symbols-outlined close-formCandidate hidden">arrow_back</label>
+            </nav>
+            <input type="checkbox" {{checked_user}} id="create-subuser">
+            <form action="{% url 'signUp' %}" method="POST" class="create-subuser">
+                {% csrf_token %}
+                {{ users_form }}
+                <input type="submit" value="Crear usuario">
+            </form>
+            <input type="checkbox" {{checked_candidate}} id="create-candidate">
+            <form  method="POST" class="create-candidate">
+                {% csrf_token %}
+                {{ candidates_form }}
+            <input type="submit" value="Crear candidato">
+        </form>
+        </div> 
+        
             <div class="resultados">
                 {{votes}}
             </div>

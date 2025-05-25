@@ -57,6 +57,7 @@ def signUp(request):
         if not form.is_valid():
                 return render(request, 'Users/signUp.html', {
                     'form': RegisterUser(request.POST,request.FILES),
+                    "checked_user" : "checked",
                 })
         #if all form is valid, save it to create an user.
         user = form.save()
@@ -108,7 +109,8 @@ def admin_votes(request):
                 return render(request,'Users/admin.html',{
                     'candidates_form' : CreateCandidateForm(request.POST),
                     'users_form' : RegisterUser(),
-                    'votes' : votes
+                    'votes' : votes,
+                    "checked_candidate" : "checked",
                 })
             form.save()
             return redirect('admin_votes')

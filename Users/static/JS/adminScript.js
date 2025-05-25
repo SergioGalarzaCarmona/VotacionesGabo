@@ -11,23 +11,23 @@ label_subuser.addEventListener('click', function (){
 
 document.addEventListener("DOMContentLoaded", () => {
     const resultados = document.querySelector('.resultados');
-    const closeFormGroup = document.querySelector(".close-formGroup");
+    const closeFormCandidate = document.querySelector(".close-formCandidate");
     const closeFormSubuser = document.querySelector(".close-formSubuser");
 
     function toggleTableVisibility() {
         if (create_subuser.checked) {
             resultados.classList.add("hidden");
-            closeFormGroup.classList.add("hidden");
+            closeFormCandidate.classList.add("hidden");
             closeFormSubuser.classList.remove("hidden");
         } 
         else if (create_candidate.checked) {
             resultados.classList.add("hidden");
             closeFormSubuser.classList.add("hidden");
-            closeFormGroup.classList.remove("hidden");
+            closeFormCandidate.classList.remove("hidden");
         }
         else {
             resultados.classList.remove("hidden");
-            closeFormGroup.classList.add("hidden");
+            closeFormCandidate.classList.add("hidden");
             closeFormSubuser.classList.add("hidden");
         }
     }
