@@ -8,9 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="{%static '/CSS/adminStyles.css'%}">
     <title>Work space</title>
-    <link rel="icon" href="{%static '/IMAGES/LogoMini.webp'%}" type="image/webp">
-    <meta name="description" content="Work space Log Inventory">
-    <meta name="author" content="Log Inventory">
+    <link rel="icon" href="{%static '/IMAGES/logo64.webp'%}" type="image/webp">
+    <meta name="description" content="Página de administración votaciones Gabo">
     <meta name="robots" content="noindex, nofollow">
 </head>
 <body>
@@ -25,31 +24,25 @@
                 <li class="sidebar__item">
                     <a href="#" class="sidebar__item-link">
                         <span class="material-symbols-outlined">add</span>
-                        <p>Crear</p>
+                        <p>Crear Usuario</p>
                     </a>
                 </li>
                 <li class="sidebar__item">
                     <a href="#" class="sidebar__item-link">
                         <span class="material-symbols-outlined">delete</span>
-                        <p>Eliminar</p>
+                        <p>Crear Candidato</p>
                     </a>
                 </li>
                 <li class="sidebar__item">
                     <a href="#" class="sidebar__item-link">
                         <span class="material-symbols-outlined">partner_exchange</span>
-                        <p>Prestamos</p>
+                        <p>Resultados</p>
                     </a>
                 </li>
                 <li class="sidebar__item">
                     <a href="#" class="sidebar__item-link">
                         <span class="material-symbols-outlined">event_note</span>
-                        <p>Transacciones</p>
-                    </a>
-                </li>
-                <li class="sidebar__item">
-                    <a href="" class="sidebar__item-link">
-                        <span class="material-symbols-outlined">groups</span>
-                        <p>Usuarios</p>
+                        <p>Resetear votaciones</p>
                     </a>
                 </li>
             </ul>
@@ -58,7 +51,7 @@
             <ul>
                 <li class="sidebar__item">
                     <a href="" class="item--profile sidebar__item-link">
-                        <img src="../../../media/{{user.profile.image}}" alt="profile-img">
+                        <img src="{%static '/IMAGES/default.webp'%}" alt="profile-img">
                         <span id="username" class="profile-option">{{user.username}}</span>
                     </a>
                 </li>
@@ -74,15 +67,8 @@
     <main> 
         <div class="filter-bar container"> 
             <div class="filter-bar__filter-container row">
-                <input type="submit" value="sort" class="filter-bar__a-z material-symbols-outlined col-md-1 col-0">
-                <input type="submit" value="sort" class="filter-bar__z-a material-symbols-outlined col-md-1 col-0">
-                <input type="submit" value="filter_alt" class="filter-bar__type material-symbols-outlined col-md-1 col-3">
-                <div class="filter-bar__name col-md-4 col-8">
-                    <input type="text">
-                    <input value="search" type="submit" class="material-symbols-outlined">
-                </div>
                 <div class="filter-bar__logo-container col-md-5 col-0">
-                    <img src="{%static '/IMAGES/logo_transparente_blanco.webp'%}" alt="logo" class="logo">
+                    <img src="{%static '/IMAGES/IEgabo.webp'%}" alt="logo" class="logo">
                 </div>
             </div>
         </div>
