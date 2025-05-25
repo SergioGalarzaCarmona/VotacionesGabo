@@ -43,13 +43,13 @@
                 <li class="sidebar__item">
                     <a href="#" class="sidebar__item-link">
                         <span class="material-symbols-outlined">event_note</span>
-                        <p>Transacciones</p>
+                        <p>Ver votaciones</p>
                     </a>
                 </li>
                 <li class="sidebar__item">
                     <a href="" class="sidebar__item-link">
                         <span class="material-symbols-outlined">groups</span>
-                        <p>Usuarios</p>
+                        <p>Reiniciar Votaciones</p>
                     </a>
                 </li>
             </ul>
@@ -89,6 +89,18 @@
         <div class="objects-area">
         </div>
     </main>
+    <section>
+        <!-- Form to create candidates. -->
+        <form  method="POST">
+            {% csrf_token %}
+            {{ candidates_form }}
+        </form>
+        <form action="{% url 'signUp' %}" method="POST">
+            {% csrf_token %}
+            {{ users_form }}
+        </form>
+    </section>
+    
     <script>
         user = '{{ request.user }}'
         </script>

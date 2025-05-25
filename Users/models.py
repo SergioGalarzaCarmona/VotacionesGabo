@@ -52,3 +52,11 @@ class Candidates(BaseAuditModel):
     votes = models.IntegerField(
         default=0
         )
+    description = models.TextField(
+        max_length=500,
+        default=''
+        )
+    image = models.ImageField(
+        upload_to='candidates/',
+        default='candidates/default.png'
+        )
