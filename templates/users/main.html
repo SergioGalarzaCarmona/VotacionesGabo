@@ -55,7 +55,7 @@
                                 <select class="form-control" name="email" id="email" placeholder="Correo electrónico" required>
                                     <option value="" disabled selected>Selecciona un candidato</option>
                                     {% for candidate in candidates %}
-                                    <option value="{{ candidate.email }}">{{ candidate.username }}</option>
+                                    <option value="{{ candidate.id }}">{{ candidate.profile.user.username }}</option>
                                     {% endfor %}
                                 </select>
                                 <label for="email" class="form-label">Correo electrónico</label>
