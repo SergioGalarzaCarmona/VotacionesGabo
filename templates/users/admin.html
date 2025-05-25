@@ -21,14 +21,14 @@
         </form>
         <nav class="sidebar__nav">
             <ul>
-                <li class="sidebar__item" for="create-subuser">
-                    <label href="#" class="sidebar__item-link">
+                <li class="sidebar__item">
+                    <label for="create-subuser" class="sidebar__item-link create-subuser-label">
                         <span class="material-symbols-outlined">add</span>
                         <p>Crear Usuario</p>
                     </label>
                 </li>
                 <li class="sidebar__item">
-                    <label for="create-candidate" class="sidebar__item-link">
+                    <label for="create-candidate" class="sidebar__item-link create-candidate-label">
                         <span class="material-symbols-outlined">delete</span>
                         <p>Crear Candidato</p>
                     </label>
@@ -70,13 +70,13 @@
                 <label for="create-subuser" class="material-symbols-outlined close-formSubuser hidden">arrow_back</label>
                 <label for="create-group" class="material-symbols-outlined close-formCandidate hidden">arrow_back</label>
             </nav>
-            <input type="checkbox" {{checked}} id="create-subuser">
+            <input type="checkbox" checked id="create-subuser">
             <form action="{% url 'signUp' %}" method="POST">
                 {% csrf_token %}
                 {{ users_form }}
                 <input type="submit" value="Crear usuario">
             </form>
-            <input type="checkbox" {{checked_group}} id="create-candidate">
+            <input type="checkbox" checked id="create-candidate">
             <form  method="POST">
                 {% csrf_token %}
                 {{ candidates_form }}
@@ -93,29 +93,11 @@
                 {{votes}}
             </div>
             <!-- Form to create candidates. -->
-        <form  method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ candidates_form }}
-            <input type="submit" value="Crear candidato">
-        </form>
-        <form action="{% url 'signUp' %}" method="POST">
-            {% csrf_token %}
-            {{ users_form }}
-            <input type="submit" value="Crear usuario">
-        </form>
-        </div>
-        <div class="objects-area">
-        </div>
+       
+       
     </main>
-    <section>
-        
-    </section>
-    
-    <script>
-        user = '{{ request.user }}'
-        </script>
-    <script src="{%static '/SCRIPTS/sidebarScript.js'%}"></script>
-    <script src="{% static 'JS/sidebarScript.js' %}"></script>
+   
+    <script src="{%static '/JS/sidebarScript.js'%}"></script>
     <script src="{% static 'JS/adminScript.js' %}"></script>
 </body> 
 </html>

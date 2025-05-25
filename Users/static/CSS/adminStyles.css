@@ -157,7 +157,7 @@ input[type="checkbox"], .open-menu {
     display: none;
 }
 
-.sidebar label {
+.sidebar__form label {
     position: relative;
     background-color: var(--fb-color);
     color: var(--sidebar-color);
@@ -166,7 +166,7 @@ input[type="checkbox"], .open-menu {
     padding: .4rem;
 }
 
-.sidebar label::before, .sidebar label::after {
+.sidebar__form label::before, .sidebar__form label::after {
     content: "";
     background-color: var(--bg-color);
     position: absolute;
@@ -175,14 +175,14 @@ input[type="checkbox"], .open-menu {
     background-color: transparent;
 }
 
-.sidebar label::before {
+.sideba__formr label::before {
     top: -25px;
     left: 19px;
     border-bottom-right-radius: 25px;
     box-shadow: 4px 4px 0 4px var(--fb-color);
 }
 
-.sidebar label::after {
+.sidebar__form label::after {
     bottom: -25px;
     left: 19px;
     border-top-right-radius: 25px;
@@ -312,14 +312,270 @@ aside:has(input[type="checkbox"]:checked) ~ main {
     width: clamp(42px, calc(28dvh - 5px), 210px);
     margin: 2.5px 0;
 }
+ 
+.close-formSubuser, .close-formCandidate {
+    position: absolute;
+    top: calc(calc(2rem + 44.78px) + 10px);
+    margin-left: 15px;
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bolder;
+    cursor: pointer;
+    transition: filter .3s;
+}
 
-.objects-area {
+.close-formSubuser:hover, .close-.close-formCandidate {
+    filter: drop-shadow(0 0 5px #fff);
+}
+
+.create-subuser, .create-candidate{
+    display: none;
+}
+
+#create-subuser:checked ~ .create-subuser, #create-candidate:checked ~ .create-candidate {
+    display: flex;
+}
+
+.subusers-link__container{
+    position: absolute;
+}
+
+.forms-container form {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 82.5dvh;
+    width: 50%;
+    padding: 0 40px;
+    border-radius: 20px;
+    margin: calc(calc(calc(100dvh - calc(2rem + 44.78px)) - 50dvh) / 2) 25%;
+    margin-top: calc(calc(calc(100dvh - calc(2rem + 44.78px)) - 82.5dvh) / 2);
+    background-color: var(--sidebar-color);
+}
+
+.forms-container input[type="submit"], .forms-container input[type="button"] {
+    background-color: var(--fb-color);
+    color: #fff;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: box-shadow .3s;
+    outline: none;
+}
+
+.forms-container input[type="submit"]:hover, .forms-container input[type="button"]:hover {
+    box-shadow: 7px 7px 0px rgb(100, 166, 231),
+                -7px -7px 0px #335a94;
+}
+
+.forms-container form input, form select, textarea {
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    font-family: inherit;
+    border-radius: 8px;
     width: 100%;
-    height: calc(100dvh - (2rem + 44.78px));
-    background-image: url(../IMAGES/Escritorio.webp);
-    background-size: cover;
-} 
+    outline: none;
+}
 
+form select {
+    cursor: pointer;
+}
+
+textarea {
+    height: 30dvh;
+    resize: none;
+}
+
+.forms-container form input:focus, form select:focus, textarea:focus {
+    outline: var(--wood) 1px solid;
+}
+
+.forms-container form a {
+    color: #333;
+    text-decoration: none;
+    margin-top: 45px;
+    font-size: .9rem;
+}
+
+.forms-container form a:hover {
+    text-decoration: underline;
+}
+
+.forms-container form > div, .forms-container form > button {
+    width: 100%;
+}
+
+.errorlist {
+    list-style: none;
+}
+
+.errorlist li {
+    color: #e24;
+    font-size: .9rem;
+}
+
+dialog {
+    border: none;
+    border-radius: 20px;
+    padding: 25px 40px;
+}
+
+dialog label.material-symbols-outlined {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    color: var(--fb-color);
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem; 
+    cursor: pointer;
+}
+
+dialog p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+dialog div {
+    display: flex;
+    gap: 15px;
+}
+
+dialog button {
+    background-color: var(--fb-color);
+    color: #fff;
+    width: 50px;
+    padding-top: 3.5px;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    font-family: inherit;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color .2s, color .2s, font-weight .2s, outline .2s; 
+}
+
+dialog button:hover {
+    outline: var(--wood) 1px solid;
+    color: var(--fb-color);
+    background-color: var(--bg-color);
+    font-weight: 600;
+    box-shadow: var(--wood) 0 0 5px;
+}
+
+
+
+.subusers-table__container {
+    width: 96%;
+    height: auto;
+    max-height: calc(100% - calc(2rem + 44.78px) - 4.2rem);
+    overflow-y: auto;
+    padding: 2px;
+    margin: 1.8% 2%;
+    background-color: var(--fb-color);
+}
+
+.subusers-table {
+    width: 100%;
+}
+
+.subusers-table td, .subusers-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.subusers-table tr {
+    background-color: #fff;
+    transition: background-color 0.1s;
+}
+
+.subusers-table tr:hover {
+    background-color: #888;
+    cursor: pointer;
+}
+
+.subusers-table tr:first-child:hover {
+    background-color: #fff;
+    cursor: default;
+}
+
+td:first-child {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar__form, .filter-bar__filter-container > .filter-bar__logo-container {
+        display: none;
+    }
+    
+    td:last-child, th:last-child {
+        display: none;
+    }
+
+    .forms-container form {
+        width: 90%;
+        margin-left: 5%;
+        padding: 0 20px;
+    }
+
+    .forms-container form {
+        height: 65dvh;
+        margin-top: calc(calc(calc(100dvh - calc(2rem + 44.78px)) - 65dvh) / 2);
+    } 
+
+    .forms-container form input, form select {
+        margin: 3% 0;
+    }
+
+    .forms-container form div {
+        margin: 1% 0;
+    }
+
+    .close-formSubuser, .close-.close-formCandidate {
+        position: absolute;
+        top: calc(calc(2rem + 44.78px) + 10px);
+        margin-left: 5%;
+        font-size: 2rem;
+    }
+
+    textarea {
+        height: 25dvh;
+    }
+}
+
+@media (max-height: 840px) and (max-width: 1024px) {
+
+    .forms-container form {
+        height: 80dvh;
+        margin-top: calc(calc(calc(100dvh - calc(2rem + 44.78px)) - 75dvh) / 2);
+    } 
+}
+
+@media (min-height: 1024px) and (max-width: 1024px) {
+    .forms-container form{
+        width: 70%;
+        margin-left: 15%;
+        height: 60dvh;
+        margin-top: calc(calc(calc(100dvh - calc(2rem + 44.78px)) - 60dvh) / 2);
+    }
+
+    textarea {
+        height: 20dvh;
+    }
+}
 
 /* MEDIA QUERIES */
 
