@@ -135,8 +135,6 @@ class VoteForm(forms.Form):
             }
         )
     )
-    def clean(self):
-        return super().clean()
         
     def save(self,user = None):
         candidate = self.cleaned_data.get('candidate')
@@ -167,6 +165,7 @@ class CreateCandidateForm(forms.ModelForm):
     )
     image = forms.ImageField(
         label='Imagen',
+        required=False
     )
     class Meta:
         model = Candidates

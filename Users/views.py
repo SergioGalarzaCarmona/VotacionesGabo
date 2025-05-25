@@ -70,15 +70,18 @@ def Logout(request):
 
 @login_required(login_url='logIn')
 def main(request):
+    candidates = Candidates.objects.all()
     if request.method == 'GET':
         return render(request, 'users/main.html',{
             'form' : VoteForm(),
+            'candidates' : candidates
         })
     else:
         form = VoteForm(request.POST)
         if not form.is_valid():
             return render(request, 'users/main.html',{
-                'form' : form
+                'form' : form,
+                'candidates' : candidates
             })
         form.save(user=request.user)
         return redirect('main')
