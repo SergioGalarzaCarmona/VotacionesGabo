@@ -167,7 +167,6 @@ class CreateCandidateForm(forms.ModelForm):
     )
     image = forms.ImageField(
         label='Imagen',
-        required=True,
     )
     class Meta:
         model = Candidates
@@ -176,6 +175,6 @@ class CreateCandidateForm(forms.ModelForm):
     def clean_profile(self):
         profile = self.cleaned_data.get('profile')
         if Candidates.objects.filter(profile=profile).exists():
-            raise ValidationError(f'El estudiante del candidato ya existe.')
+            raise ValidationError(f'El candidato ya esta registrado.')
         return profile
     

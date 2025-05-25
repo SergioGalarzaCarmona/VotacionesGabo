@@ -89,7 +89,7 @@
                 {{votes}}
             </div>
             <!-- Form to create candidates. -->
-        <form  method="POST">
+        <form  method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ candidates_form }}
             <input type="submit" value="Crear candidato">
