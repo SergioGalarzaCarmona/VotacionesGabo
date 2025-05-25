@@ -29,16 +29,10 @@ class RegisterUser(UserCreationForm):
                 }
             )
         )
-    grade = forms.CharField(
-        max_length=10,
+    grade = forms.ChoiceField(
+        choices=[(f'{i}-{j}',f'{i}-{j}') for i in range(1,12) for j in range(1,7)],
         label='Grado',
         required=True,
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'Grado',
-                'class' : ''
-                }
-            )
         )
     identity = forms.IntegerField(    
         label='Identificación',
@@ -74,7 +68,7 @@ class RegisterUser(UserCreationForm):
         )
     class Meta: 
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email','grade','identity','password1', 'password2']
         help_texts = {k:"" for k in fields}
 
     def clean_username(self):
@@ -154,4 +148,34 @@ class VoteForm(forms.Form):
             user.save()
         
         
+class CreateCandidateForm(forms.ModelForm):
+    
+    profile = forms.ModelChoiceField(
+        queryset=Profile.objects.filter(grade__startswith='11-'),
+        label='Estudiante',
+        required=True,
+    )
+    description = forms.CharField(
+        max_length=500,
+        label='Descripción',
+        required=True,
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Descripción',
+            }
+        )
+    )
+    image = forms.ImageField(
+        label='Imagen',
+        required=True,
+    )
+    class Meta:
+        model = Candidates
+        fields = ['profile', 'description', 'image']
+        
+    def clean_profile(self):
+        profile = self.cleaned_data.get('profile')
+        if Candidates.objects.filter(profile=profile).exists():
+            raise ValidationError(f'El estudiante del candidato ya existe.')
+        return profile
     

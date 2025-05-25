@@ -2,13 +2,17 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterUser, LoginUser, VoteForm
+from django.core.management import call_command
+from .models import Candidates
+from .forms import RegisterUser, LoginUser, VoteForm, CreateCandidateForm
+
 
 # Create your views here.
 def home(request):
     return render(request, 'users/home.html')
 
 def logIn(request):
+    logout(request)
     if request.method == 'GET':
         return render(request, 'users/logIn.html')
     else:
@@ -44,9 +48,8 @@ def logIn(request):
             })
 
 def signUp(request):
-    print(request.POST)
     if request.method == 'GET':
-        return render(request, 'users/signUp.html')
+        return redirect('home')
     else:
         #create form to register user
         form = RegisterUser(request.POST)
@@ -61,7 +64,7 @@ def signUp(request):
         form.create_profile(user)
         #login the user
         login(request, user)
-        return redirect('main')
+        return redirect('admin_votes')
     
 def Logout(request):
     logout(request)
@@ -84,6 +87,32 @@ def main(request):
     
 @login_required(login_url='logIn')
 def admin_votes(request):
-
+    #check if the user is superuser
+    if not request.user.is_superuser:
+        print(request.user.is_superuser)
+        return redirect('main')
     if request.method == 'GET':
-        return render(request,'Users/admin.html')
+        return render(request,'Users/admin.html',{
+            'candidates_form' : CreateCandidateForm(),
+            'users_form' : RegisterUser(),
+        })
+        
+@login_required(login_url='logIn')
+def restart_votes(request):
+    #check if the user is superuser
+    if not request.user.is_superuser:
+        return redirect('main')
+    call_command('flush', interactive=False)
+
+@login_required(login_url='logIn')
+def view_votes(request):
+    #check if the user is superuser
+    if not request.user.is_superuser:
+        return redirect('main')
+    #get all candidates
+    candidates = Candidates.objects.all()
+    votes = { 'candidate': candidate.votes for candidate in candidates }
+    if request.method == 'GET':
+        return render(request,'Users/admin.html',{
+            'votes' : votes
+        }) 
