@@ -64,30 +64,37 @@
             </ul>
         </div>
     </aside>
-    <main> 
+    <main>
+        <div class="forms-container">
+            <nav>
+                <label for="create-subuser" class="material-symbols-outlined close-formSubuser hidden">arrow_back</label>
+                <label for="create-group" class="material-symbols-outlined close-formCandidate hidden">arrow_back</label>
+            </nav>
+            <input type="checkbox" {{checked}} id="create-subuser">
+            <form action="{% url 'signUp' %}" method="POST">
+                {% csrf_token %}
+                {{ users_form }}
+                <input type="submit" value="Crear usuario">
+            </form>
+            <input type="checkbox" {{checked_group}} id="create-candidate">
+            <form  method="POST">
+                {% csrf_token %}
+                {{ candidates_form }}
+            <input type="submit" value="Crear candidato">
+        </form>
+        </div> 
         <div class="filter-bar container"> 
             <div class="filter-bar__filter-container row">
                 <div class="filter-bar__logo-container col-md-5 col-0">
                     <img src="{%static '/IMAGES/IEgabo.webp'%}" alt="logo" class="logo">
                 </div>
             </div>
-            <div>
+            <div class="resultados">
                 {{votes}}
             </div>
             <!-- Form to create candidates. -->
-        <form  method="POST">
-            {% csrf_token %}
-            {{ candidates_form }}
-            <input type="submit" value="Crear candidato">
-        </form>
-        <form action="{% url 'signUp' %}" method="POST">
-            {% csrf_token %}
-            {{ users_form }}
-            <input type="submit" value="Crear usuario">
-        </form>
-        </div>
-        <div class="objects-area">
-        </div>
+     
+    
     </main>
     <section>
         
