@@ -84,7 +84,7 @@
                 <input type="submit" value="Crear usuario">
             </form>
             <input type="checkbox" {{checked_candidate}} id="create-candidate">
-            <form  method="POST" class="create-candidate">
+            <form  method="POST" enctype="multipart/form-data" class="create-candidate">
                 {% csrf_token %}
                 {{ candidates_form }}
                 <input type="submit" value="Crear candidato">
