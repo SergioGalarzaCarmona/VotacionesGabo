@@ -52,15 +52,15 @@
                           <div class="row gy-3 overflow-hidden">
                             <div class="col-12">
                               <div class="form-floating mb-3">
-                                <select class="form-control" name="email" id="email" placeholder="Correo electrónico" required>
+                                <select class="form-control" name="candidate" id="candidate" placeholder="Correo electrónico" required>
                                     <option value="" disabled selected>Selecciona un candidato</option>
                                     {% for candidate in candidates %}
-                                    <option value="{{ candidate.id }}">{{ candidate.profile.user.username }}</option>
+                                    <option value="{{ candidate.id }}">{{ candidate }}</option>
                                     {% endfor %}
                                 </select>
                                 <label for="email" class="form-label">Correo electrónico</label>
                               </div>
-                            </div>
+                            </div> 
                             <div class="col-12">
                               <div class="d-grid">
                                 <button class="btn btn-dark btn-lg" type="submit">Votar</button>

@@ -12,7 +12,7 @@
     <meta name="description" content="Página de administración votaciones Gabo">
     <meta name="robots" content="noindex, nofollow">
 </head>
-<body>
+<body> 
     <aside class="sidebar">
         <form class="sidebar__form">
             <input type="checkbox" id="open-menu">
@@ -23,25 +23,25 @@
             <ul>
                 <li class="sidebar__item">
                     <label for="create-subuser" class="sidebar__item-link create-subuser-label">
-                        <span class="material-symbols-outlined">add</span>
+                        <span class="material-symbols-outlined">person_add</span>
                         <p>Crear Usuario</p>
                     </label>
                 </li>
                 <li class="sidebar__item">
                     <label for="create-candidate" class="sidebar__item-link create-candidate-label">
-                        <span class="material-symbols-outlined">delete</span>
+                        <span class="material-symbols-outlined">how_to_reg</span>
                         <p>Crear Candidato</p>
                     </label>
                 </li>
                 <li class="sidebar__item">
                     <a href="{% url 'admin_votes' %}" class="sidebar__item-link">
-                        <span class="material-symbols-outlined">partner_exchange</span>
+                        <span class="material-symbols-outlined">ballot</span>
                         <p>Resultados</p>
                     </a>
                 </li>
                 <li class="sidebar__item">
                     <label for="reset-dialog" class="sidebar__item-link open-dialog">
-                        <span class="material-symbols-outlined">groups</span>
+                        <span class="material-symbols-outlined">restart_alt</span>
                         <p>Resetear votaciones</p>
                     </label>
                 </li>
@@ -67,8 +67,8 @@
     <main>
         <div class="filter-bar container"> 
             <div class="filter-bar__filter-container row">
-                <div class="filter-bar__logo-container col-md-5 col-0">
-                    <img src="{%static '/IMAGES/IEgabo.webp'%}" alt="logo" class="logo">
+                <div class="filter-bar__logo-container">
+                    <img src="{%static '/IMAGES/IEgabo.webp'%}" alt="Logo Gabo" class="logo">
                 </div>
             </div>
         </div>
