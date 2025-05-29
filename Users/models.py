@@ -58,5 +58,5 @@ class Candidates(BaseAuditModel):
         )
     image = models.ImageField(
         upload_to='candidates/',
-        default='candidates/default.png'
+        default='candidates/default_candidate.webp'
         )

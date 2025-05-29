@@ -137,7 +137,8 @@ class VoteForm(forms.Form):
     )
         
     def save(self,user = None):
-        candidate = self.cleaned_data.get('candidate')
+        candidate_name = self.cleaned_data.get('candidate')
+        candidate = Candidates.objects.filter(profile__user__username=candidate_name)
         if candidate:
             candidate.votes += 1
             candidate.save()

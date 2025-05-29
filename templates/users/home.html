@@ -86,12 +86,12 @@
         <div class="card mb-3">
           <div class="row g-0">
             <div class="col-md-4">
-              <img src="{%static '/IMAGES/dalto.webp'%}" class="img-fluid rounded-start" alt="Benito">
+              <img src="../../media/{{candidate.image}}" class="img-fluid rounded-start" alt="{{candidate.profile.user.username}}'s image">
             </div>
             <div class="col-md-8">
               <div class="card-body">
                 <h5 class="card-title">{{candidate.profile.user.username}} {{candidate.profile.grade}}</h5>
-                <p class="card-text">{{description}}</p>
+                <p class="card-text">{{candidate.description}}</p>
               </div>
             </div>
           </div>

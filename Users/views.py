@@ -9,7 +9,10 @@ from .forms import RegisterUser, LoginUser, VoteForm, CreateCandidateForm
 
 # Create your views here.
 def home(request):
-    return render(request, 'users/home.html')
+    candidates = Candidates.objects.all()
+    return render(request, 'users/home.html',{
+        'candidates' : candidates
+    })
 
 def logIn(request):
     logout(request)
@@ -55,8 +58,9 @@ def signUp(request):
         form = RegisterUser(request.POST)
         #if only one value of form is invalid, return the error message, and css class for fix error of margin
         if not form.is_valid():
-                return render(request, 'Users/signUp.html', {
-                    'form': RegisterUser(request.POST,request.FILES),
+                return render(request, 'Users/admin.html', {
+                    'candidates_form' : CreateCandidateForm(),
+                    'users_form' : RegisterUser(request.POST,request.FILES),
                     "checked_user" : "checked",
                 })
         #if all form is valid, save it to create an user.
@@ -104,7 +108,7 @@ def admin_votes(request):
         profile = request.POST.get('profile')
         #if the profile is not empty, create a candidate
         if profile:
-            form = CreateCandidateForm(request.POST)
+            form = CreateCandidateForm(request.POST,request.FILES)
             if not form.is_valid():
                 return render(request,'Users/admin.html',{
                     'candidates_form' : CreateCandidateForm(request.POST),
