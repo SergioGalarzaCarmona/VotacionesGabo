@@ -50,10 +50,10 @@
         <div class="sidebar__profile">
             <ul>
                 <li class="sidebar__item">
-                    <a href="" class="item--profile sidebar__item-link">
+                    <div class="item--profile sidebar__item-link">
                         <img src="{%static '/IMAGES/default.webp'%}" alt="profile-img">
                         <span id="username" class="profile-option">{{user.username}}</span>
-                    </a>
+                    </div>
                 </li>
                 <li class="sidebar__item">
                     <a href="{% url 'logout' %}" class="sidebar__item-link">

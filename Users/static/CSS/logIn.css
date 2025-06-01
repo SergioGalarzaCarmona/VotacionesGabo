@@ -1,3 +1,11 @@
-body {
-    background-color: rgba(206, 253, 253, 0.082);
-}
+@media (max-width: 768px) {
+    body {
+        height: 100dvh;
+        display: grid;
+        place-content: center;
+    }
+    
+    .mariposas {
+        display: none;
+    }
+} 
