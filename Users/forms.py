@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
 from .models import Profile, Candidates
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 
 class RegisterUser(UserCreationForm):
@@ -137,8 +137,7 @@ class VoteForm(forms.Form):
     )
         
     def save(self,user = None):
-        candidate_name = self.cleaned_data.get('candidate')
-        candidate = Candidates.objects.filter(profile__user__username=candidate_name)
+        candidate = self.cleaned_data.get('candidate')
         if candidate:
             candidate.votes += 1
             candidate.save()

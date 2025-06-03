@@ -96,7 +96,7 @@ def admin_votes(request):
     #check if the user is superuser
     if not request.user.is_superuser:
         return redirect('main')
-    candidates = Candidates.objects.all()
+    candidates = Candidates.objects.all().order_by('-votes')
     votes = [ (f'{candidate.profile.user.username}', candidate.votes) for candidate in candidates ]
     if request.method == 'GET':
         return render(request,'Users/admin.html',{

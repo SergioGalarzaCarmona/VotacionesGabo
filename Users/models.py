@@ -60,3 +60,6 @@ class Candidates(BaseAuditModel):
         upload_to='candidates/',
         default='candidates/default_candidate.webp'
         )
+    
+    def __str__(self):
+        return f'{self.profile.user.username} {self.profile.grade}'
