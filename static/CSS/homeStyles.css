@@ -1,0 +1,48 @@
+    body {
+      background-color: #f1f5f9;
+    }
+    .logo {
+      height: 60px;
+    }
+    .navbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #d1d5db;
+    }
+    .carousel-caption h5 {
+      font-size: 1.5rem;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 0.5rem;
+      border-radius: 6px;
+    }
+    .candidate-card {
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      height: 180px;
+    }
+    .candidate-img {
+      width: 30%;
+      object-fit: cover;
+    }
+    .candidate-info {
+      padding: 1rem;
+      width: 70%;
+    }
+    .personeria { background-color: #fde047; }
+    .contraloria { background-color: #93c5fd; }
+    footer {
+      background-color: #dc2626;
+      color: white;
+    }
+    .footer-bottom {
+      background-color: #b91c1c;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+    .social-icon {
+      background: black;
+      color: white;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.6rem;
+      margin: 0 0.3rem;
+    }

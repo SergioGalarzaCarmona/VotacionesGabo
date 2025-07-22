@@ -27,8 +27,15 @@ class Profile(BaseAuditModel):
         default=''
         )
     identification = models.IntegerField (
+        default=0,
+        unique=True
         )
-    
+    voted_ombudman = models.BooleanField (
+        default=False
+        )
+    voted_comptroller = models.BooleanField (
+        default=False
+        )
     def __str__(self):
         return f'{self.user.username} Profile'
     
@@ -40,17 +47,23 @@ class Profile(BaseAuditModel):
         super().__init__(*args, **kwargs)
 
 class Candidates(BaseAuditModel):
+    
+    ROLES = [
+        ('Personería', 'Personería'),
+        ('Contraloría', 'Contraloría'),
+    ]
+
+    
     profile = models.OneToOneField(
         Profile, 
         on_delete=models.CASCADE, 
         related_name='candidate_profile'
         )
-    code = models.CharField(
-        max_length=10,
-        default=''
-        )
     votes = models.IntegerField(
         default=0
+        )
+    percentage = models.FloatField(
+        default=0.0
         )
     description = models.TextField(
         max_length=500,
@@ -60,6 +73,10 @@ class Candidates(BaseAuditModel):
         upload_to='candidates/',
         default='candidates/default_candidate.webp'
         )
-    
+    role = models.CharField(
+        max_length=20,
+        choices=ROLES,
+        default='Personería'
+    )
     def __str__(self):
         return f'{self.profile.user.username} {self.profile.grade}'

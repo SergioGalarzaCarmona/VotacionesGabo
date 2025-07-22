@@ -83,6 +83,13 @@ class RegisterUser(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('El email ya está registrado.')
         return email
+    def clean_identity(self):
+        identity = self.cleaned_data['identity']
+        if Profile.objects.filter(identification=identity).exists():
+            raise forms.ValidationError('La identificación ya está registrada.')
+        if len(str(identity)) < 6:
+            raise forms.ValidationError('La identificación debe tener al menos 6 dígitos.')
+        return identity
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')

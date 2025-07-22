@@ -3,15 +3,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
-from .models import Candidates
+from .models import Candidates, Profile
 from .forms import RegisterUser, LoginUser, VoteForm, CreateCandidateForm
+from django.contrib import messages
 
 
 # Create your views here.
 def home(request):
-    candidates = Candidates.objects.all()
+    ombudmans = Candidates.objects.filter(role='Personería').order_by('-votes')
+    comptrollers = Candidates.objects.filter(role='Contraloría').order_by('-votes')
     return render(request, 'users/home.html',{
-        'candidates' : candidates
+        'comptrollers' : comptrollers,
+        'ombudmans' : ombudmans,
     })
 
 def logIn(request):
@@ -75,18 +78,22 @@ def Logout(request):
 
 @login_required(login_url='logIn')
 def main(request):
-    candidates = Candidates.objects.all()
+    ombudmans = Candidates.objects.filter(role='Personería')
+    comptrollers = Candidates.objects.filter(role='Contraloría')
     if request.method == 'GET':
         return render(request, 'users/main.html',{
             'form' : VoteForm(),
-            'candidates' : candidates
+            'ombudmans' : ombudmans,
+            'comptrollers' : comptrollers,
         })
     else:
         form = VoteForm(request.POST)
         if not form.is_valid():
             return render(request, 'users/main.html',{
                 'form' : form,
-                'candidates' : candidates
+                'ombudmans' : ombudmans,
+                'comptrollers' : comptrollers,
+                
             })
         form.save(user=request.user)
         return redirect('main')
@@ -96,33 +103,178 @@ def admin_votes(request):
     #check if the user is superuser
     if not request.user.is_superuser:
         return redirect('main')
+    ombudmans = Candidates.objects.filter(role='Personería')
+    comptrollers = Candidates.objects.filter(role='Contraloría')
+    votes_ombudman = sum(candidate.votes for candidate in ombudmans)
+    votes_comptroller = sum(candidate.votes for candidate in comptrollers)
+    for candidate in ombudmans:
+        candidate.percentage = (candidate.votes / votes_ombudman * 100) if votes_ombudman > 0 else 0
+        candidate.save()
+    for candidate in comptrollers:
+        candidate.percentage = (candidate.votes / votes_comptroller * 100) if votes_comptroller > 0 else 0
+        candidate.save()
+    profiles = Profile.objects.all()
     candidates = Candidates.objects.all().order_by('-votes')
-    votes = [ (f'{candidate.profile.user.username}', candidate.votes) for candidate in candidates ]
+    votes_casted = Profile.objects.filter(voted_ombudman=True, voted_comptroller=True).count()
+    users = User.objects.filter(is_superuser=False).count()
+    if users > 0:
+        percentage = (votes_casted / users) * 100
+    else:
+        percentage = 0
     if request.method == 'GET':
         return render(request,'Users/admin.html',{
-            'candidates_form' : CreateCandidateForm(),
-            'users_form' : RegisterUser(),
-            'votes' : votes
+            'profiles' : profiles,
+            'candidates' : candidates,
+            'votes_casted' : votes_casted,
+            'users' : users,
+            'percentage' : percentage,
         })
+        
+@login_required(login_url='logIn')
+def create_user(request):
+    if request.method != 'POST':
+        return redirect('admin_votes')
+    form = RegisterUser(request.POST, request.FILES)
+    profiles = Profile.objects.all()
+    candidates = Candidates.objects.all().order_by('-votes')
+    votes_casted = Profile.objects.filter(voted_ombudman=True, voted_comptroller=True).count()
+    users = User.objects.filter(is_superuser=False).count()
+    if users > 0:
+        percentage = (votes_casted / users) * 100
     else:
-        profile = request.POST.get('profile')
-        #if the profile is not empty, create a candidate
-        if profile:
-            form = CreateCandidateForm(request.POST,request.FILES)
-            if not form.is_valid():
-                return render(request,'Users/admin.html',{
-                    'candidates_form' : CreateCandidateForm(request.POST),
-                    'users_form' : RegisterUser(),
-                    'votes' : votes,
-                    "checked_candidate" : "checked",
-                })
-            form.save()
-            return redirect('admin_votes')
+        percentage = 0
+    if not form.is_valid():
+        messages.warning(request, 'Hubo un error al crear el usuario. Por favor, revisa el formulario.')
+        return render(request, 'Users/admin.html', {
+            'users_form': RegisterUser(request.POST),
+            "checked_user": "True",
+            'profiles' : profiles,
+            'candidates' : candidates,
+            'votes_casted' : votes_casted,
+            'users' : users,
+            'percentage' : percentage,
+        })
+    user = form.save()
+    form.create_profile(user)
+    messages.success(request, 'Usuario creado exitosamente.')
+    return redirect('admin_votes')
+
+@login_required(login_url='logIn')
+def create_candidate(request):
+    if request.method != 'POST':
+        return redirect('admin_votes')
+    form = CreateCandidateForm(request.POST, request.FILES)
+    profiles = Profile.objects.all()
+    candidates = Candidates.objects.all().order_by('-votes')
+    votes_casted = Profile.objects.filter(voted_ombudman=True, voted_comptroller=True).count()
+    users = User.objects.filter(is_superuser=False).count()
+    if users > 0:
+        percentage = (votes_casted / users) * 100
+    else:
+        percentage = 0
+    if not form.is_valid():
+        messages.warning(request, 'Hubo un error al crear el candidato. Por favor, revisa el formulario.')
+        return render(request, 'Users/admin.html', {
+            'candidates_form': CreateCandidateForm(request.POST),
+            "checked_candidate": "True",
+            'profiles' : profiles,
+            'candidates' : candidates,
+            'votes_casted' : votes_casted,
+            'users' : users,
+            'percentage' : percentage,
+        })
+    form.save()
+    messages.success(request, 'Candidato creado exitosamente.')
+    return redirect('admin_votes')
+
 @login_required(login_url='logIn')
 def restart_votes(request):
+    if request.method != 'POST':
+        return redirect('admin_votes')
     #check if the user is superuser
     if not request.user.is_superuser:
         return redirect('main')
     call_command('flush', interactive=False)
     return redirect('home')
 
+@login_required(login_url='logIn')
+def vote(request):
+    if request.method != 'POST':
+        return redirect('main')
+    profile = Profile.objects.get(user=request.user)
+    form = VoteForm(request.POST)
+    ombudmans = Candidates.objects.filter(role='Personería')
+    comptrollers = Candidates.objects.filter(role='Contraloría')
+    profiles = Profile.objects.all()
+    candidates = Candidates.objects.all().order_by('-votes')
+    votes_casted = Profile.objects.filter(voted_ombudman=True, voted_comptroller=True).count()
+    users = User.objects.filter(is_superuser=False).count()
+    if users > 0:
+        percentage = (votes_casted / users) * 100
+    else:
+        percentage = 0
+    if not form.is_valid():
+        messages.warning(request, 'Por favor, selecciona un candidato.')
+        return render(request, 'users/main.html', {
+            'form': form,
+            'ombudmans' : ombudmans,
+            'comptrollers' : comptrollers,
+            'profiles' : profiles,
+            'candidates' : candidates,
+            'votes_casted' : votes_casted,
+            'users' : users,
+            'percentage' : percentage,
+        })
+
+    candidate = form.cleaned_data.get('candidate')
+    if candidate.role == 'Personería':
+        if request.user.profile.voted_ombudman:
+            messages.warning(request, 'Ya has votado por el personero.')
+            return render(request, 'users/main.html', {
+                'form': form,
+                'ombudmans' : ombudmans,
+                'comptrollers' : comptrollers,
+                'error': 'Ya has votado por el personero.',
+                'profiles' : profiles,
+                'candidates' : candidates,
+                'votes_casted' : votes_casted,
+                'users' : users,
+                'percentage' : percentage,
+            })
+        profile.voted_ombudman = True
+        profile.save()
+        candidate.votes += 1
+        candidate.save()
+        if request.user.profile.voted_comptroller:
+            form.save(user=request.user)
+    elif candidate.role == 'Contraloría':
+        if request.user.profile.voted_comptroller:
+            messages.warning(request, 'Ya has votado por el contralor.')
+            return render(request, 'users/main.html', {
+                'form': form,
+                'ombudmans' : ombudmans,
+                'comptrollers' : comptrollers,
+                'profiles' : profiles,
+                'candidates' : candidates,
+                'votes_casted' : votes_casted,
+                'users' : users,
+                'percentage' : percentage,
+            })
+        profile.voted_comptroller = True
+        profile.save()
+        candidate.votes += 1
+        candidate.save()
+        if request.user.profile.voted_ombudman:
+            form.save(user=request.user)
+    messages.success(request, 'Voto registrado exitosamente.')
+    return render(request, 'users/main.html', {
+        'form': VoteForm(),
+        'ombudmans' : ombudmans,
+        'comptrollers' : comptrollers,
+        'profiles' : profiles,
+        'candidates' : candidates,
+        'votes_casted' : votes_casted,
+        'users' : users,
+        'percentage' : percentage,
+    }
+    )

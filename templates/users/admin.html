@@ -2,120 +2,272 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <link rel="stylesheet" href="{%static '/CSS/adminStyles.css'%}">
-    <title>Work space</title>
-    <link rel="icon" href="{%static '/IMAGES/logo64.webp'%}" type="image/webp">
-    <meta name="description" content="Página de administración votaciones Gabo">
-    <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <title>Panel de Administración - I.E. Gabo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'CSS/adminStyles.css' %}">
 </head>
-<body> 
-    <aside class="sidebar">
-        <form class="sidebar__form">
-            <input type="checkbox" id="open-menu">
-            <label class="material-symbols-outlined close-menu" for="open-menu">chevron_left</label>
-            <label class="material-symbols-outlined open-menu" for="open-menu">chevron_right</label>
-        </form>
-        <nav class="sidebar__nav">
-            <ul>
-                <li class="sidebar__item">
-                    <label for="create-subuser" class="sidebar__item-link create-subuser-label">
-                        <span class="material-symbols-outlined">person_add</span>
-                        <p>Crear Usuario</p>
-                    </label>
-                </li>
-                <li class="sidebar__item">
-                    <label for="create-candidate" class="sidebar__item-link create-candidate-label">
-                        <span class="material-symbols-outlined">how_to_reg</span>
-                        <p>Crear Candidato</p>
-                    </label>
-                </li>
-                <li class="sidebar__item">
-                    <a href="{% url 'admin_votes' %}" class="sidebar__item-link">
-                        <span class="material-symbols-outlined">ballot</span>
-                        <p>Resultados</p>
-                    </a>
-                </li>
-                <li class="sidebar__item">
-                    <label for="reset-dialog" class="sidebar__item-link open-dialog">
-                        <span class="material-symbols-outlined">restart_alt</span>
-                        <p>Resetear votaciones</p>
-                    </label>
-                </li>
-            </ul>
-        </nav>
-        <div class="sidebar__profile">
-            <ul>
-                <li class="sidebar__item">
-                    <div class="item--profile sidebar__item-link">
-                        <img src="{%static '/IMAGES/default.webp'%}" alt="profile-img">
-                        <span id="username" class="profile-option">{{user.username}}</span>
-                    </div>
-                </li>
-                <li class="sidebar__item">
-                    <a href="{% url 'logout' %}" class="sidebar__item-link">
-                        <span class="material-symbols-outlined">Logout</span>
-                        <p>Cerrar Sesión</p>
-                    </a>   
-                </li>
-            </ul>
+<body {% if checked_user or checked_candidate %} class="modal-open" style="overflow: hidden; padding-right: 0px;" {% endif %}>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-2 sidebar">
+        <h6 class="fw-bold text-primary mb-4">
+          <i class="bi bi-bar-chart-fill me-2"></i> Panel Admin
+        </h6>
+        <a href="{% url 'admin_votes' %}" class="active"><i class="bi bi-house-door me-2"></i>Inicio</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal" id="createUser"><i class="bi bi-person-plus me-2"></i>Crear Usuario</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#crearCandidatoModal" id="createCandidate"><i class="bi bi-person-square me-2"></i>Crear Candidato</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#resetModal"><i class="bi bi-arrow-repeat me-2"></i>Resetear Votaciones</a>
+        <a href="{% url 'logout' %}" class="text-danger"><i class="bi bi-door-closed me-2"></i>Cerrar Sesión</a>
+      </div>
+
+      <!-- Main content -->
+      <div class="col-md-10 p-4">
+        <!-- Topbar -->
+        <div class="topbar mb-4">
+          <div class="d-flex align-items-center gap-2">
+            <img src="{% static 'IMAGES/logo.webp' %}" height="40" />
+            <span class="fw-semibold text-secondary">INSTITUCIÓN EDUCATIVA GABO</span>
+          </div>
+          <div class="text-end">
+            <span class="fw-bold d-block">TOTALTESTER</span>
+            <small class="text-muted">Administrador</small>
+          </div>
         </div>
-    </aside>
-    <main>
-        <div class="filter-bar container"> 
-            <div class="filter-bar__filter-container row">
-                <div class="filter-bar__logo-container">
-                    <img src="{%static '/IMAGES/IEgabo.webp'%}" alt="Logo Gabo" class="logo">
+
+        <!-- messages -->
+
+        {% if messages %}
+          <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080">
+            {% for message in messages %}
+              <div class="toast align-items-center text-white bg-{{ message.tags }} border-0 show mb-2" role="alert">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    {{ message }}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
                 </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+
+        <!-- Stats -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <div class="card-box">
+              <h6 class="text-muted">Votos Emitidos</h6>
+              <h3>{{ votes_casted }}</h3>
             </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card-box">
+              <h6 class="text-muted">Personas Registradas</h6>
+              <h3>{{ users }}</h3>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card-box">
+              <h6 class="text-muted">Participación</h6>
+              <h3>{{ percentage }}%</h3>
+            </div>
+          </div>
         </div>
-        <div class="forms-container">
-            <nav>
-                <label for="create-subuser" class="material-symbols-outlined close-formSubuser hidden">arrow_back</label>
-                <label for="create-candidate" class="material-symbols-outlined close-formCandidate hidden">arrow_back</label>
-            </nav>
-            <input type="checkbox" {{checked_user}} id="create-subuser">
-            <form action="{% url 'signUp' %}" method="POST" class="create-subuser">
-                {% csrf_token %}
-                {{ users_form }}
-                <input type="submit" value="Crear usuario">
-            </form>
-            <input type="checkbox" {{checked_candidate}} id="create-candidate">
-            <form  method="POST" enctype="multipart/form-data" class="create-candidate">
-                {% csrf_token %}
-                {{ candidates_form }}
-                <input type="submit" value="Crear candidato">
-            </form>
-            <dialog class="reset-dialog">
-                <label for="close-dialog" class="material-symbols-outlined">Close</label>
-                <p>¿Está seguro? Al reiniciar las votaciones se borran todos los registros irreversiblemente.</p>
-                <div>
-                    <button value=0 id="close-dialog">No</button>
-                    <a href="{% url 'restart' %}"><button  value=1 id="create">Si</button></a>
-                </div>
-            </dialog>
-        </div> 
-        <div class="resultados">
-            <table class="subusers-table">
+
+        <!-- IR A VOTAR  -->
+        <div class="card p-4 shadow-sm border-0">
+          <h5 class="fw-bold mb-2">Participar en elecciones</h5>
+          <p class="text-muted">Vota en las elecciones actualmente disponibles.</p>
+          <a href="{% url 'main' %}" class="btn btn-action w-100">Ir a Votación</a>
+        </div>
+        <!-- Sección de Resultados por Candidato -->
+        <div class="mt-5">
+          <h5 class="fw-bold mb-3">Resultados por Candidato</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+              <thead class="table-light">
                 <tr>
-                    <th>Puesto</th>
-                    <th>Nombre</th>
-                    <th>Cantidad Votos</th>
+                  <th>Candidato</th>
+                  <th>Posición</th>
+                  <th>Votos</th>
+                  <th>Porcentaje</th>
+                  <th>Gráfico</th>
                 </tr>
-                {% for name,votes in votes %}
+              </thead>
+              <tbody>
+                {% for candidate in candidates %}
                 <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{name}}</td>
-                    <td>{{votes}}</td>
+                  <td>{{ candidate.profile.user.username }}</td>
+                  <td>{{ candidate.role }}</td>
+                  <td>{{ candidate.votes }}</td>
+                  <td>{{ candidate.percentage }}%</td>
+                  <td>
+                    <div class="progress" style="height: 12px;">
+                      <div class="progress-bar bg-success" role="progressbar"style="width: {{ candidate.percentage }}%;" aria-valuenow="{{ candidate.percentage }}" aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </td>
                 </tr>
                 {% endfor %}
+              </tbody>
             </table>
+          </div>
         </div>
-    </main>
-    <script src="{%static '/JS/sidebarScript.js'%}"></script>
-    <script src="{% static 'JS/adminScript.js' %}"></script>
-</body> 
+      </div>
+    </div>
+  </div>
+
+  <!-- MOSTRAR RESETEAR VOTAIONES -->
+  <div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="resetModalLabel">
+          Confirmar reseteo de votaciones
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+        ¿Estás seguro de que deseas <strong>resetear todas las votaciones</strong>? Esta acción no se puede deshacer.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        
+        <!-- Acción con formulario POST -->
+        <form method="POST" action="{% url 'restart' %}">
+          <button type="submit" class="btn btn-danger">Sí, resetear</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- MOSTRAR CREAR USUARIO -->
+  <div class="modal fade" id="crearUsuarioModal" tabindex="-1" aria-labelledby="crearUsuarioModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <form method="POST" action="{% url 'create_user' %}">
+        {% csrf_token %}
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-primary" id="crearUsuarioModalLabel">Crear Usuario</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="username" class="form-label">Nombre de usuario</label>
+               {{users_form.errors.username}}
+              <input type="text" name="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo electrónico</label>
+              {{users_form.errors.email}}
+              <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="grade" class="form-label">Grado</label>
+              {{users_form.errors.grade}}
+              <input type="text" name="grade" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="identification" class="form-label">Identificación</label>
+              {{users_form.errors.identity}}
+              <input type="number" name="identity" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="password1" class="form-label">Contraseña</label>
+              {{users_form.errors.password1}}
+              <input type="password" name="password1" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="password2" class="form-label">Confirmación de Contraseña</label>
+              {{users_form.errors.password2}}
+              <input type="password" name="password2" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal Crear Candidato -->
+  <div class="modal fade" id="crearCandidatoModal" tabindex="-1" aria-labelledby="crearCandidatoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form method="POST" action="{% url 'create_candidate' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-primary" id="crearCandidatoModalLabel">Crear Candidato</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="profile" class="form-label">Perfil asociado</label>
+              <select name="profile" class="form-select" required>
+                {% for profile in profiles %}
+                <option value="{{ profile.id }}">{{ profile.user.username }} - {{ profile.grade }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Propuesta / Descripción</label>
+              <textarea name="description" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Foto del candidato</label>
+              <input type="file" name="image" accept="image/*" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label for="categoria" class="form-label">Cargo</label>
+              <select name="categoria" class="form-select" required>
+                <option value="Personería">Personería</option>
+                <option value="Contraloría">Contraloría</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar Candidato</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+ 
+  <script>
+    function resetearVotaciones() {
+    fetch('/resetear-votaciones', { method: 'POST' })
+      .then(res => {
+        if (res.ok) {
+          alert("Votaciones reseteadas correctamente");
+          location.reload();
+        } else {
+          alert("Error al resetear votaciones");
+        }
+      });
+    }
+
+  const checked_user = "{{ checked_user }}";
+  const checked_candidate = "{{ checked_candidate }}";
+
+  if (checked_user === "True") {
+    const createUserButton = document.getElementById('createUser');
+    createUserButton.click();
+  }
+  if (checked_candidate === "True") {
+    const createCandidateButton = document.getElementById('createCandidate');
+    createCandidateButton.click();
+  }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
