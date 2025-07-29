@@ -48,3 +48,17 @@ body {
     font-size: 0.875rem;
     margin-top: 0.25rem;
 }
+
+textarea.form-control {
+  height: 15vh;
+  resize: none;
+  overflow: auto;
+}
+
+@media(max-width: 768px) {
+  .sidebar {
+    height: auto;
+  }
+  
+  
+}
