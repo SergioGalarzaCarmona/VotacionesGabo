@@ -14,16 +14,37 @@
   <div class="container-fluid">
     <div class="row">
       <!-- Sidebar -->
-      <div class="col-md-2 sidebar">
-        <h6 class="fw-bold text-primary mb-4">
-          <i class="bi bi-bar-chart-fill me-2"></i> Panel Admin
-        </h6>
-        <a href="{% url 'admin_votes' %}" class="active"><i class="bi bi-house-door me-2"></i>Inicio</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal" id="createUser"><i class="bi bi-person-plus me-2"></i>Crear Usuario</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#crearCandidatoModal" id="createCandidate"><i class="bi bi-person-square me-2"></i>Crear Candidato</a>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#resetModal"><i class="bi bi-arrow-repeat me-2"></i>Resetear Votaciones</a>
-        <a href="{% url 'logout' %}" class="text-danger"><i class="bi bi-door-closed me-2"></i>Cerrar Sesión</a>
-      </div>
+      <!-- Botón para mostrar el sidebar (solo en móviles) -->
+        <button class="btn btn-primary d-md-none m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" style="width: 90vw;">
+          <i class="bi bi-list"></i> Menú
+        </button>
+        
+        <!-- Sidebar Offcanvas -->
+        <div class="offcanvas offcanvas-start d-md-none hover" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarMenuLabel">Panel Admin</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+          </div>
+          <div class="offcanvas-body">
+            <a href="{% url 'admin_votes' %}" class="d-block mb-2 nav-link active "><i class="bi bi-house-door me-2"></i>Inicio</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal" id="createUser" class="d-block mb-2 nav-link hover"><i class="bi bi-person-plus me-2"></i>Crear Usuario</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#crearCandidatoModal" id="createCandidate" class="d-block mb-2 nav-link hover"><i class="bi bi-person-square me-2"></i>Crear Candidato</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#resetModal" class="d-block mb-2 nav-link hover"><i class="bi bi-arrow-repeat me-2"></i>Resetear Votaciones</a>
+            <a href="{% url 'logout' %}" class="d-block text-danger nav-link hover"><i class="bi bi-door-closed me-2"></i>Cerrar Sesión</a>
+          </div>
+        </div>
+        
+        <!-- Sidebar visible solo en desktop -->
+        <div class="col-md-2 sidebar d-none d-md-block">
+          <h6 class="fw-bold text-primary mb-4">
+            <i class="bi bi-bar-chart-fill me-2"></i> Panel Admin
+          </h6>
+          <a href="{% url 'admin_votes' %}" class="active"><i class="bi bi-house-door me-2"></i>Inicio</a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal" id="createUser"><i class="bi bi-person-plus me-2"></i>Crear Usuario</a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#crearCandidatoModal" id="createCandidate"><i class="bi bi-person-square me-2"></i>Crear Candidato</a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#resetModal"><i class="bi bi-arrow-repeat me-2"></i>Resetear Votaciones</a>
+          <a href="{% url 'logout' %}" class="text-danger"><i class="bi bi-door-closed me-2"></i>Cerrar Sesión</a>
+        </div>
 
       <!-- Main content -->
       <div class="col-md-10 p-4">
@@ -174,7 +195,13 @@
             <div class="mb-3">
               <label for="grade" class="form-label">Grado</label>
               {{users_form.errors.grade}}
-              <input type="text" name="grade" class="form-control" required>
+              <select name="grade" id="grade" class="form-control">
+                <option value="11-1">11-1</option>
+                <option value="11-2">11-2</option>
+                <option value="11-3">11-3</option>
+                <option value="11-4">11-4</option>
+                <option value="11-5">11-5</option>
+              </select>
             </div>
             <div class="mb-3">
               <label for="identification" class="form-label">Identificación</label>
@@ -212,6 +239,7 @@
           <div class="modal-body">
             <div class="mb-3">
               <label for="profile" class="form-label">Perfil asociado</label>
+              {{candidates_form.errors.profile}}
               <select name="profile" class="form-select" required>
                 {% for profile in profiles %}
                 <option value="{{ profile.id }}">{{ profile.user.username }} - {{ profile.grade }}</option>
@@ -220,15 +248,18 @@
             </div>
             <div class="mb-3">
               <label for="description" class="form-label">Propuesta / Descripción</label>
+              {{candidates_form.errors.description}}
               <textarea name="description" class="form-control" rows="3" required></textarea>
             </div>
             <div class="mb-3">
               <label for="image" class="form-label">Foto del candidato</label>
+              {{candidates_form.errors.image}}
               <input type="file" name="image" accept="image/*" class="form-control">
             </div>
             <div class="mb-3">
-              <label for="categoria" class="form-label">Cargo</label>
-              <select name="categoria" class="form-select" required>
+              <label for="role" class="form-label">Cargo</label>
+              {{candidates_form.errors.role}}
+              <select name="role" class="form-select" required>
                 <option value="Personería">Personería</option>
                 <option value="Contraloría">Contraloría</option>
               </select>

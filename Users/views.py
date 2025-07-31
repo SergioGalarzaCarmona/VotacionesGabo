@@ -168,6 +168,7 @@ def create_candidate(request):
     candidates = Candidates.objects.all().order_by('-votes')
     votes_casted = Profile.objects.filter(voted_ombudman=True, voted_comptroller=True).count()
     users = User.objects.filter(is_superuser=False).count()
+    print(request.POST)
     if users > 0:
         percentage = (votes_casted / users) * 100
     else:

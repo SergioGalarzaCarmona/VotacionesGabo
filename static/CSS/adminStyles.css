@@ -20,6 +20,21 @@ body {
   background-color: #e0f2fe;
   color: #0284c7;
 }
+
+
+.hover a {
+  display: block;
+  padding: 0.6rem 1rem;
+  color: #334155;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+.hover a.active,
+.hover a:hover {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
 .topbar {
   height: 60px;
   background-color: #ffffff;

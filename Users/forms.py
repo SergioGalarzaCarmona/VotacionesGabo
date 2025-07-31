@@ -33,6 +33,7 @@ class RegisterUser(UserCreationForm):
         choices=[(f'{i}-{j}',f'{i}-{j}') for i in range(1,12) for j in range(1,7)],
         label='Grado',
         required=True,
+        widget=forms.Select()
         )
     identity = forms.IntegerField(    
         label='Identificación',
@@ -170,13 +171,19 @@ class CreateCandidateForm(forms.ModelForm):
             }
         )
     )
+    role = forms.CharField(
+        max_length=20,
+        label='Categoría',
+        required=True,
+        widget=forms.Select()
+    )
     image = forms.ImageField(
         label='Imagen',
         required=False
     )
     class Meta:
         model = Candidates
-        fields = ['profile', 'description', 'image']
+        fields = ['profile', 'description', 'image','role']
         
     def clean_profile(self):
         profile = self.cleaned_data.get('profile')
