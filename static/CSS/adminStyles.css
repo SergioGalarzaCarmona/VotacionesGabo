@@ -31,7 +31,7 @@ body {
   margin-bottom: 0.5rem;
 }
 .hover a.active,
-.hover a:hover {
+.hover a:active {
   background-color: #e0f2fe;
   color: #0284c7;
 }
