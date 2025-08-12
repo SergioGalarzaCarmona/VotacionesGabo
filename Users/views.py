@@ -8,11 +8,10 @@ from .forms import RegisterUser, LoginUser, VoteForm, CreateCandidateForm
 from django.contrib import messages
 
 from .orm_calling import render_template, login_async, logout_async, get_candidates, count_votes, get_user_by_email, superuser_required, sum_votes, save_candidate, count_users,get_profiles
-
+import asyncio
 # Create your views here.
 async def home(request):
-    ombudmans = await get_candidates('Personería')   
-    comptrollers = await get_candidates('Contraloría')
+    ombudmans,comptrollers = await asyncio.gather(get_candidates('Personería'), get_candidates('Contraloría'))
     return await render_template(request, 'users/home.html',{
         'comptrollers' : comptrollers,
         'ombudmans' : ombudmans,
@@ -103,20 +102,27 @@ async def admin_votes(request):
     #check if the user is superuser
     if not await superuser_required(request):
         return redirect('main')
-    ombudmans = await get_candidates('Personería')   
-    comptrollers = await get_candidates('Contraloría')
-    votes_ombudman = await sum_votes(ombudmans)
-    votes_comptroller = await sum_votes(comptrollers)
+    ombudmans, comptrollers, = await asyncio.gather(
+        get_candidates('Personería'),
+        get_candidates('Contraloría'),
+
+    )
+    votes_ombudman,votes_comptroller = await asyncio.gather(        
+        sum_votes(ombudmans),
+        sum_votes(comptrollers)
+        )
     for candidate in ombudmans:
         candidate.percentage = (candidate.votes / votes_ombudman * 100) if votes_ombudman > 0 else 0
         await save_candidate(candidate)
     for candidate in comptrollers:
         candidate.percentage = (candidate.votes / votes_comptroller * 100) if votes_comptroller > 0 else 0
         await save_candidate(candidate)
-    profiles = await get_profiles()
-    candidates = await get_candidates()
-    votes_casted = await count_votes()
-    users = await count_users()
+    profiles,candidates,votes_casted,users = await asyncio.gather(
+        get_profiles(),
+        get_candidates(),
+        count_votes(),
+        count_users()
+    )
     if users > 0:
         percentage = (votes_casted / users) * 100
     else:
