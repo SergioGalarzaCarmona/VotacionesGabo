@@ -7,48 +7,48 @@ from .models import Candidates, Profile
 from .forms import RegisterUser, LoginUser, VoteForm, CreateCandidateForm
 from django.contrib import messages
 
+from .orm_calling import render_template, login_async, logout_async, get_candidates, count_votes, get_user_by_email, superuser_required, sum_votes, save_candidate, count_users,get_profiles
 
 # Create your views here.
-def home(request):
-    ombudmans = Candidates.objects.filter(role='Personería').order_by('-votes')
-    comptrollers = Candidates.objects.filter(role='Contraloría').order_by('-votes')
-    return render(request, 'users/home.html',{
+async def home(request):
+    ombudmans = await get_candidates('Personería')   
+    comptrollers = await get_candidates('Contraloría')
+    return await render_template(request, 'users/home.html',{
         'comptrollers' : comptrollers,
         'ombudmans' : ombudmans,
     })
 
-def logIn(request):
-    logout(request)
+async def logIn(request):
+    await logout_async(request)
     if request.method == 'GET':
         return render(request, 'users/logIn.html')
     else:
-        #get the username by email
-        try:
-            user = User.objects.get(email=request.POST['email'])
-        #if the email is not registered, return a error message
-        except User.DoesNotExist:
-            return render(request, 'Users/LogIn.html', {
+        user = await get_user_by_email(request.POST['email'])
+        #if not find user, return a error message
+        if user is None:
+            return await render_template(request, 'users/logIn.html', {
                 'form': LoginUser(request.POST),
-                'error': 'El email no esta registrado.'
+                'error': 'Usuario o contraseña incorrectos'
             })
+
         #verifies if the user is active
         if not user.is_active:
-            return render(request,'users/logIn.html',{
+            return render_template(request,'users/logIn.html',{
                 'form': LoginUser(request.POST),
                 'error': 'Este usuario ya votó.'
             })
         if user.is_superuser:
-            login(request, user)
+            await login_async(request, user)
             return redirect('admin_votes')
         #authenticate user
         user = authenticate(username=user.username, password=request.POST['password'], is_active=True)
         #If find user and two values are corrects, log in.
         if user is not None:
-            login(request, user)
+            await login_async(request, user)
             return redirect('main')
         #if not find user, return a error message 
         else:
-            return render(request, 'Users/logIn.html', {
+            return render_template(request, 'Users/logIn.html', {
                 'form': LoginUser(request.POST),
                 'error': 'Usuario o contraseña incorrectos'
             })
@@ -72,16 +72,16 @@ def signUp(request):
         form.create_profile(user)
         return redirect('admin_votes')
     
-def Logout(request):
-    logout(request)
+async def Logout(request):
+    await logout_async(request)
     return redirect('home')
 
 @login_required(login_url='logIn')
-def main(request):
-    ombudmans = Candidates.objects.filter(role='Personería')
-    comptrollers = Candidates.objects.filter(role='Contraloría')
+async def main(request):
+    ombudmans = await get_candidates('Personería')   
+    comptrollers = await get_candidates('Contraloría')
     if request.method == 'GET':
-        return render(request, 'users/main.html',{
+        return await render_template(request, 'users/main.html',{
             'form' : VoteForm(),
             'ombudmans' : ombudmans,
             'comptrollers' : comptrollers,
@@ -89,7 +89,7 @@ def main(request):
     else:
         form = VoteForm(request.POST)
         if not form.is_valid():
-            return render(request, 'users/main.html',{
+            return render_template(request, 'users/main.html',{
                 'form' : form,
                 'ombudmans' : ombudmans,
                 'comptrollers' : comptrollers,
@@ -99,30 +99,30 @@ def main(request):
         return redirect('main')
     
 @login_required(login_url='logIn')
-def admin_votes(request):
+async def admin_votes(request):
     #check if the user is superuser
-    if not request.user.is_superuser:
+    if not await superuser_required(request):
         return redirect('main')
-    ombudmans = Candidates.objects.filter(role='Personería')
-    comptrollers = Candidates.objects.filter(role='Contraloría')
-    votes_ombudman = sum(candidate.votes for candidate in ombudmans)
-    votes_comptroller = sum(candidate.votes for candidate in comptrollers)
+    ombudmans = await get_candidates('Personería')   
+    comptrollers = await get_candidates('Contraloría')
+    votes_ombudman = await sum_votes(ombudmans)
+    votes_comptroller = await sum_votes(comptrollers)
     for candidate in ombudmans:
         candidate.percentage = (candidate.votes / votes_ombudman * 100) if votes_ombudman > 0 else 0
-        candidate.save()
+        await save_candidate(candidate)
     for candidate in comptrollers:
         candidate.percentage = (candidate.votes / votes_comptroller * 100) if votes_comptroller > 0 else 0
-        candidate.save()
-    profiles = Profile.objects.all()
-    candidates = Candidates.objects.all().order_by('-votes')
-    votes_casted = Profile.objects.filter(voted_ombudman=True, voted_comptroller=True).count()
-    users = User.objects.filter(is_superuser=False).count()
+        await save_candidate(candidate)
+    profiles = await get_profiles()
+    candidates = await get_candidates()
+    votes_casted = await count_votes()
+    users = await count_users()
     if users > 0:
         percentage = (votes_casted / users) * 100
     else:
         percentage = 0
     if request.method == 'GET':
-        return render(request,'Users/admin.html',{
+        return await render_template(request,'Users/admin.html',{
             'profiles' : profiles,
             'candidates' : candidates,
             'votes_casted' : votes_casted,
